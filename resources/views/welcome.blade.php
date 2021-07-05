@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laravel</title>
-    <link rel="stylesheet" href="{{ secure_asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
         body {
             padding-top: 56px;
@@ -61,8 +61,17 @@
 
     <div class="container pt-5">
 
+        <div class="row justify-content-center">
+            <div class="col col-8">
+                <input type="text" class="form-control mb-5" placeholder="Publicar algo...">
+            </div>
+        </div>
+
+
+
+
         <div class="row">
-            <div class="col-3">
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                 <div class="card mb-5" style="box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3)">
                     <div class="card-body">
                         <h5 class="card-title">
@@ -87,25 +96,13 @@
                 </div>
             </div>
 
-            <div class="col-3">
-                <div class="card mb-5">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
-                            additional content. This content is a little bit longer.</p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                    </div>
-                    <img src="https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/59c4f5655bafe82c692a7052/gato-marron_0.jpg"
-                        class="card-img-bottom" alt="...">
-                </div>
-            </div>
 
 
         </div>
     </div>
 
 
-    <script src="{{ secure_asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 
 </html>
