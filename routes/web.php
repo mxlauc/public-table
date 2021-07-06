@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [PostController::class, 'index'])->name('home');
+
+Route::resource('posts', PostController::class)->names("posts");
 
 Route::get('login/google', [LoginController::class, 'redirectToProvider'])->name('social.auth');
 Route::get('logout', [LoginController::class, 'logout'])->name('social.auth.logout');
