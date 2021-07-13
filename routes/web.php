@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostLikeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +19,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PostController::class, 'index'])->name('home');
 
-Route::resource('posts', PostController::class)->names("posts");
+Route::resource('posts', PostController::class)->names("posts")->except(['create', 'edit']);
+Route::resource('posts.likes', PostLikeController::class)->names('posts.likes')->except(['show', 'create', 'edit', 'destroy', 'update']);
+Route::get('posts/{post}/likes/{user}', [PostLikeController::class, 'show'])->name('posts.likes.show');
+Route::resource('posts.comments', CommentController::class)->names("comments")->shallow()->except(['show', 'edit', 'create']);
 
 Route::get('login/google', [LoginController::class, 'redirectToProvider'])->name('social.auth');
 Route::get('logout', [LoginController::class, 'logout'])->name('social.auth.logout');

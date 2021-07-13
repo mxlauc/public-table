@@ -4,21 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Comment;
 use App\Models\Post;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
-class PostController extends Controller
+use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
+use SebastianBergmann\Environment\Console;
+
+
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $id)
     {
-        $posts = Post::orderBy('id', 'DESC')->get();
-        return view('home', compact('posts'));
-
+        if(!$request->page){
+            $comments = Comment::with('user')->where('post_id', $id)->paginate(3);
+            return redirect($comments->url($comments->lastPage()));
+        }
+        return Comment::with('user')->where('post_id', $id)->paginate(3);
     }
 
     /**
@@ -28,7 +33,7 @@ class PostController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -37,24 +42,23 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id, Request $request)
     {
+
         if(!$request->user()){
-            return; //no hay usuario
+            return "";
         }
 
-        $imagen = null;
-        if($request->file('imagen')){
-            $imagen = $request->file('imagen')->store('public/imagenes');
-        }
-
-        Post::create([
+        $comment = Comment::create([
             "descripcion" => $request->descripcion,
-            "imagen" => $imagen,
             "user_id" => $request->user()->id,
+            "post_id" => $id
         ]);
 
-        return response()->json('ok');
+        return response()->json([
+            "id" => $comment->id,
+            "count" => Post::find($id)->comments()->count()
+        ]);
     }
 
     /**
@@ -65,8 +69,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::with('user')->find($id);
-        return view('post.show', compact('post'));
+        return $id;
     }
 
     /**
@@ -89,7 +92,11 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $comment = Comment::find($id);
+        $comment->update([
+            "descripcion" => $request->descripcion
+        ]);
+        return response()->json("ok");
     }
 
     /**
@@ -98,13 +105,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        Post::find($id)->delete();
-        //return redirect()
-        if($request->ajax()){
-            return response()->json('ok');
-        }
-        return redirect()->route('home');
+        $comment = Comment::find($id);
+        $postId = $comment->post_id;
+        $comment->delete();
+        return response()->json([
+            "count" => Post::find($postId)->comments()->count()
+        ]);
     }
 }
