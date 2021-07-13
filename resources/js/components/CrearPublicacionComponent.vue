@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col col-8">
                 <label
-                    class="form-control text-muted mb-5"
+                    class="form-control text-muted mb-4"
                     role="button"
                     tabindex="0"
                     data-bs-toggle="modal"

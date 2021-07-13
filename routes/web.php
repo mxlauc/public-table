@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [PostController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::resource('posts', PostController::class)->names("posts")->except(['create', 'edit']);
 Route::resource('posts.likes', PostLikeController::class)->names('posts.likes')->except(['show', 'create', 'edit', 'destroy', 'update']);

@@ -7,7 +7,7 @@
                 usuario-nombre="{{$post->user->name}}"
                 usuario-imagen="{{$post->user->avatar}}"
                 post-id="{{$post->id}}"
-                imagen="{{$post->imagen ? Storage::url($post->imagen) : ''}}"
+                imagen="{{$post->imagen}}"
                 descripcion="{{$post->descripcion}}"
                 fecha-creacion="{{$post->created_at}}"
                 :show-post-page="true">

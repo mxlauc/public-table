@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -44,6 +45,13 @@ class Post extends Model
 
     public function likes(){
         return $this->morphMany(Like::class, 'likable');
+    }
+
+    public function getImagenAttribute($value){
+        if($value){
+            return Storage::url($value);
+        }
+        return $value;
     }
 
     public function getCreatedAtAttribute($value){

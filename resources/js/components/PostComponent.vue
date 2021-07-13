@@ -131,7 +131,7 @@
         </div>
     </div>
     <div
-        class="card mb-4"
+        class="card mb-4 cardPostInvisible" :class="{cardPostVisible : false}"
         style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1)"
         ref="card"
     >
@@ -333,6 +333,10 @@ export default {
         "usuarioLoginId",
     ],
     mounted() {
+        var thisComponent = this;
+        setTimeout(function(){
+            thisComponent.$refs.card.classList.add("cardPostVisible");
+        }, Math.random() * 500);
         if (!this.showPostPage) {
             new ResizeObserver(function () {
                 var msnry = new Masonry(".masonry-row", {
@@ -463,5 +467,14 @@ export default {
 }
 .like{
     color: #0571ED;
+}
+.cardPostInvisible{
+    opacity: 0;
+}
+.cardPostVisible{
+    opacity: 1;
+}
+.card{
+    transition: opacity 0.6s ease-out;
 }
 </style>
