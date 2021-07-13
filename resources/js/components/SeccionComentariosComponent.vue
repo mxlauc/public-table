@@ -9,13 +9,18 @@
         >
             Ver comentarios anteriores
         </a>
-        <comentario-component
-            v-for="comentario in comentarios"
-            :key="comentario.id"
-            :comentario="comentario"
-            :post-id="postId"
-        >
-        </comentario-component>
+        <div >
+            <transition-group name="grupo-comentarios">
+                <comentario-component
+                    v-for="comentario in comentarios"
+                    :key="comentario.id"
+                    :comentario="comentario"
+                    :post-id="postId">
+                </comentario-component>
+            </transition-group>
+        </div>
+
+
 
         <div class="row g-0">
             <div class="col col-auto py-2 ps-2">
@@ -359,6 +364,27 @@ export default {
 .textarea[contenteditable]:empty::before {
     content: "Escribe un comentario...";
     color: gray;
+}
+
+
+.grupo-comentarios-enter-active {
+  transition: all 0.8s ease-in-out;
+
+}
+
+.grupo-comentarios-leave-active {
+  transition: all 0.3s ease-in;
+  position: absolute;
+}
+
+.grupo-comentarios-enter-from,
+.grupo-comentarios-leave-to {
+    transform: translateX(5px);
+    opacity: 0;
+    width: 100%;
+}
+.grupo-comentarios-move {
+  transition: transform 0.5s ease-out;
 }
 </style>
 

@@ -22416,17 +22416,26 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.cargarMasComentarios && $options.cargarMasComentarios.apply($options, arguments);
     })
-  }, " Ver comentarios anteriores ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.comentarios, function (comentario) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_comentario_component, {
-      key: comentario.id,
-      comentario: comentario,
-      "post-id": $props.postId
-    }, null, 8
-    /* PROPS */
-    , ["comentario", "post-id"]);
-  }), 128
-  /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
+  }, " Ver comentarios anteriores ")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(vue__WEBPACK_IMPORTED_MODULE_0__.TransitionGroup, {
+    name: "grupo-comentarios"
+  }, {
+    "default": _withId(function () {
+      return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.comentarios, function (comentario) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_comentario_component, {
+          key: comentario.id,
+          comentario: comentario,
+          "post-id": $props.postId
+        }, null, 8
+        /* PROPS */
+        , ["comentario", "post-id"]);
+      }), 128
+      /* KEYED_FRAGMENT */
+      ))];
+    }),
+    _: 1
+    /* STABLE */
+
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("img", {
     src: $options.usuarioLoginImagen,
     "class": "imagenUsuario"
   }, null, 8
@@ -27608,7 +27617,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.imagenUsuario[data-v-0196ea86] {\n    border-radius: 50%;\n    height: 30px;\n}\n.textarea[data-v-0196ea86] {\n    background-color: #eee;\n    border-radius: 12px;\n    outline: none;\n    font-family: inherit;\n    font-size: inherit;\n    padding: 5px 10px;\n    display: block;\n\n    resize: none;\n    min-height: 30px;\n\n    font-size: 14px;\n}\n.textarea[contenteditable][data-v-0196ea86]:empty::before {\n    content: \"Escribe un comentario...\";\n    color: gray;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.imagenUsuario[data-v-0196ea86] {\n    border-radius: 50%;\n    height: 30px;\n}\n.textarea[data-v-0196ea86] {\n    background-color: #eee;\n    border-radius: 12px;\n    outline: none;\n    font-family: inherit;\n    font-size: inherit;\n    padding: 5px 10px;\n    display: block;\n\n    resize: none;\n    min-height: 30px;\n\n    font-size: 14px;\n}\n.textarea[contenteditable][data-v-0196ea86]:empty::before {\n    content: \"Escribe un comentario...\";\n    color: gray;\n}\n.grupo-comentarios-enter-active[data-v-0196ea86] {\n  transition: all 0.8s ease-in-out;\n}\n.grupo-comentarios-leave-active[data-v-0196ea86] {\n  transition: all 0.3s ease-in;\n  position: absolute;\n}\n.grupo-comentarios-enter-from[data-v-0196ea86],\n.grupo-comentarios-leave-to[data-v-0196ea86] {\n    transform: translateX(5px);\n    opacity: 0;\n    width: 100%;\n}\n.grupo-comentarios-move[data-v-0196ea86] {\n  transition: transform 0.5s ease-out;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
