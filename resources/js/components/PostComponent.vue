@@ -215,8 +215,10 @@
                 </div>
             </div>
             <hr class="my-2" />
-            <p class="card-text" :style="{ fontSize: fontSize + 'px' }">
-                {{ descripcion }}
+            <p class="card-text" :style="{ fontSize: fontSize + 'px' }" style="white-space:pre-wrap;">
+                {{mostrarDescripcion}}
+                <span class="fw-bold" role="button" @click="isTextoTruncado=false" v-if="truncarTexto && isTextoTruncado">(Ver más)</span>
+                <span class="fw-bold" role="button" @click="isTextoTruncado=true" v-if="truncarTexto && !isTextoTruncado">(Ver menos)</span>
             </p>
         </div>
 
@@ -317,7 +319,10 @@ export default {
             },
             likes: [],
             fechaCreacionDisplay: '',
-            cantidadComentariosDisplay: 0
+            cantidadComentariosDisplay: 0,
+            textoTruncado: '',
+            isTextoTruncado: true,
+            truncarTexto: false,
         };
     },
     props: [
@@ -333,6 +338,8 @@ export default {
         "usuarioLoginId",
     ],
     mounted() {
+        this.calcularTruncamiento();
+
         var thisComponent = this;
         setTimeout(function(){
             thisComponent.$refs.card.classList.add("cardPostVisible");
@@ -367,7 +374,32 @@ export default {
         this.establecerFechaCreacionDisplay();
 
     },
+    computed: {
+        mostrarDescripcion(){
+            return (this.truncarTexto && this.isTextoTruncado) ? this.textoTruncado : this.descripcion;
+        }
+    },
     methods: {
+        calcularTruncamiento(){
+            let tamanoLineas = 40;
+            let maxLineas = 5;
+            let contadorLineas = 0;
+            let index = 0;
+            let lineas = this.descripcion.split("\n");
+            for(let i = 0 ; i< lineas.length ; i++){
+                let partLineas = Math.ceil(lineas[i].length / tamanoLineas);
+                if(contadorLineas + partLineas > maxLineas){
+                    this.textoTruncado = this.descripcion.substring(0, index + ((maxLineas - contadorLineas) * tamanoLineas)).trim() + "...";
+                    this.truncarTexto = true;
+                    return;
+                }
+                contadorLineas += partLineas;
+                index += lineas[i].length;
+                if(i > 0){
+                    index += 1;
+                }
+            }
+        },
         focusCajaTexto() {
             console.log("cajaTexto" + this.postId);
             document.querySelector("#cajaTexto" + this.postId).focus();

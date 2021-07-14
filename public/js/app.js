@@ -21120,12 +21120,16 @@ __webpack_require__.r(__webpack_exports__);
       },
       likes: [],
       fechaCreacionDisplay: '',
-      cantidadComentariosDisplay: 0
+      cantidadComentariosDisplay: 0,
+      textoTruncado: '',
+      isTextoTruncado: true,
+      truncarTexto: false
     };
   },
   props: ["postId", "usuarioNombre", "usuarioImagen", "imagen", "descripcion", "showPostPage", "fechaCreacion"],
   inject: ["usuarioLoginId"],
   mounted: function mounted() {
+    this.calcularTruncamiento();
     var thisComponent = this;
     setTimeout(function () {
       thisComponent.$refs.card.classList.add("cardPostVisible");
@@ -21163,7 +21167,36 @@ __webpack_require__.r(__webpack_exports__);
     });
     this.establecerFechaCreacionDisplay();
   },
+  computed: {
+    mostrarDescripcion: function mostrarDescripcion() {
+      return this.truncarTexto && this.isTextoTruncado ? this.textoTruncado : this.descripcion;
+    }
+  },
   methods: {
+    calcularTruncamiento: function calcularTruncamiento() {
+      var tamanoLineas = 40;
+      var maxLineas = 5;
+      var contadorLineas = 0;
+      var index = 0;
+      var lineas = this.descripcion.split("\n");
+
+      for (var i = 0; i < lineas.length; i++) {
+        var partLineas = Math.ceil(lineas[i].length / tamanoLineas);
+
+        if (contadorLineas + partLineas > maxLineas) {
+          this.textoTruncado = this.descripcion.substring(0, index + (maxLineas - contadorLineas) * tamanoLineas).trim() + "...";
+          this.truncarTexto = true;
+          return;
+        }
+
+        contadorLineas += partLineas;
+        index += lineas[i].length;
+
+        if (i > 0) {
+          index += 1;
+        }
+      }
+    },
     focusCajaTexto: function focusCajaTexto() {
       console.log("cajaTexto" + this.postId);
       document.querySelector("#cajaTexto" + this.postId).focus();
@@ -22211,11 +22244,29 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
   /* PROPS */
   , ["data-bs-target"])])])])]), _hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
     "class": "card-text",
-    style: {
+    style: [{
       fontSize: $data.fontSize + 'px'
-    }
-  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.descripcion), 5
-  /* TEXT, STYLE */
+    }, {
+      "white-space": "pre-wrap"
+    }]
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.mostrarDescripcion) + " ", 1
+  /* TEXT */
+  ), $data.truncarTexto && $data.isTextoTruncado ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", {
+    key: 0,
+    "class": "fw-bold",
+    role: "button",
+    onClick: _cache[2] || (_cache[2] = function ($event) {
+      return $data.isTextoTruncado = false;
+    })
+  }, "(Ver más)")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.truncarTexto && !$data.isTextoTruncado ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("span", {
+    key: 1,
+    "class": "fw-bold",
+    role: "button",
+    onClick: _cache[3] || (_cache[3] = function ($event) {
+      return $data.isTextoTruncado = true;
+    })
+  }, "(Ver menos)")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 4
+  /* STYLE */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_37, [$props.imagen ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("img", {
     key: 0,
     src: $props.imagen,
@@ -22241,14 +22292,14 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     "class": ["col text-center py-2", {
       like: $data.likeInfo.miLike
     }],
-    onClick: _cache[2] || (_cache[2] = function () {
+    onClick: _cache[4] || (_cache[4] = function () {
       return $options.toggleLike && $options.toggleLike.apply($options, arguments);
     })
   }, [$data.likeInfo.miLike ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_46, [_hoisted_47])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("svg", _hoisted_48, [_hoisted_49])), _hoisted_50], 2
   /* CLASS */
   ), [[_directive_wave]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", {
     "class": "col text-center py-2",
-    onClick: _cache[3] || (_cache[3] = function () {
+    onClick: _cache[5] || (_cache[5] = function () {
       return $options.focusCajaTexto && $options.focusCajaTexto.apply($options, arguments);
     })
   }, [_hoisted_51, _hoisted_52], 512
