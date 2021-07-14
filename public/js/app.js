@@ -21409,36 +21409,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var v_simple_infinite_scroll__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! v-simple-infinite-scroll */ "./node_modules/v-simple-infinite-scroll/dist/v-simple-infinite-scroll.esm.js");
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    VSimpleInfiniteScroll: v_simple_infinite_scroll__WEBPACK_IMPORTED_MODULE_0__.default
+  },
   data: function data() {
     return {
       posts: [],
       postsPaginador: null
     };
   },
-  mounted: function mounted() {
-    this.cargarPosts();
-  },
+  mounted: function mounted() {},
   methods: {
-    cargarPosts: function cargarPosts() {
+    cargarMasPosts: function cargarMasPosts(scroller) {
       var _this = this;
 
-      axios.get('/posts').then(function (response) {
-        console.log(response.data);
-        _this.postsPaginador = response.data;
-        _this.posts = response.data.data;
-      })["catch"](function (response) {
-        console.log(response.data);
-      });
-    },
-    cargarMasPosts: function cargarMasPosts() {
-      var _this2 = this;
+      var url = this.postsPaginador ? this.postsPaginador.next_page_url : '/posts';
 
-      if (this.postsPaginador.next_page_url) {
-        axios.get(this.postsPaginador.next_page_url).then(function (response) {
-          console.log(response.data);
-          _this2.postsPaginador = response.data;
-          _this2.posts = _this2.posts.concat(response.data.data);
+      if (url) {
+        axios.get(url).then(function (response) {
+          _this.postsPaginador = response.data;
+          _this.posts = _this.posts.concat(response.data.data);
+          scroller.loaded();
         })["catch"](function (response) {
           console.log(response.data);
         });
@@ -22580,36 +22574,48 @@ var _hoisted_1 = {
   "class": "row masonry-row justify-content-center"
 };
 
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Cargando...");
+
 (0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
 
 var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
   var _component_post_component = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("post-component");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.posts, function (post) {
-    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
-      "class": "col col-12 col-md-6 col-lg-4 col-xl-3",
-      key: post.id
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_post_component, {
-      "post-id": post.id,
-      "usuario-nombre": post.user.name,
-      "usuario-imagen": post.user.avatar,
-      imagen: post.imagen,
-      descripcion: post.descripcion,
-      "fecha-creacion": post.created_at,
-      "show-post-page": false
-    }, null, 8
-    /* PROPS */
-    , ["post-id", "usuario-nombre", "usuario-imagen", "imagen", "descripcion", "fecha-creacion"])]);
-  }), 128
-  /* KEYED_FRAGMENT */
-  ))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("button", {
-    "class": "btn btn-primary w-100",
-    onClick: _cache[1] || (_cache[1] = function () {
-      return $options.cargarMasPosts && $options.cargarMasPosts.apply($options, arguments);
-    })
-  }, "Cargar mas")], 64
-  /* STABLE_FRAGMENT */
-  );
+  var _component_v_simple_infinite_scroll = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("v-simple-infinite-scroll");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_v_simple_infinite_scroll, {
+    onCargar: $options.cargarMasPosts,
+    distance: 250
+  }, {
+    "default": _withId(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.posts, function (post) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", {
+          "class": "col col-12 col-md-6 col-lg-4 col-xl-3",
+          key: post.id
+        }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_post_component, {
+          "post-id": post.id,
+          "usuario-nombre": post.user.name,
+          "usuario-imagen": post.user.avatar,
+          imagen: post.imagen,
+          descripcion: post.descripcion,
+          "fecha-creacion": post.created_at,
+          "show-post-page": false
+        }, null, 8
+        /* PROPS */
+        , ["post-id", "usuario-nombre", "usuario-imagen", "imagen", "descripcion", "fecha-creacion"])]);
+      }), 128
+      /* KEYED_FRAGMENT */
+      ))])];
+    }),
+    carganido: _withId(function () {
+      return [_hoisted_2];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["onCargar"]);
 });
 
 /***/ }),
@@ -47956,6 +47962,162 @@ module.exports = function (list, options) {
     lastIdentifiers = newLastIdentifiers;
   };
 };
+
+/***/ }),
+
+/***/ "./node_modules/v-simple-infinite-scroll/dist/v-simple-infinite-scroll.esm.js":
+/*!************************************************************************************!*\
+  !*** ./node_modules/v-simple-infinite-scroll/dist/v-simple-infinite-scroll.esm.js ***!
+  \************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
+
+var script = {
+  data() {
+    return {
+      cargando: false,
+      completed: false
+    };
+  },
+
+  props: {
+    distance: {
+      type: Number,
+      default: 100
+    },
+    loadToFill: {
+      type: Boolean,
+      default: true
+    }
+  },
+  emits: ['cargar'],
+
+  mounted() {
+    this.aplicarListener();
+    this.handleScroll();
+  },
+
+  unmounted() {
+    this.desvincularListener();
+  },
+
+  watch: {},
+  methods: {
+    handleScroll() {
+      if (!this.cargando && this.$refs.contenedor.getBoundingClientRect().bottom < window.innerHeight + this.distance) {
+        this.loadMorePosts();
+      }
+    },
+
+    aplicarListener() {
+      window.addEventListener("scroll", this.handleScroll);
+    },
+
+    desvincularListener() {
+      window.removeEventListener("scroll", this.handleScroll);
+    },
+
+    loadMorePosts() {
+      this.cargando = true;
+      this.$emit('cargar', this);
+    },
+
+    loaded() {
+      //waiting 300 ms for items to be rendered
+      setTimeout(() => {
+        this.cargando = false;
+        this.tryToFill();
+      }, 300);
+    },
+
+    complete() {
+      this.cargando = false;
+      this.completed = true;
+      this.desvincularListener();
+    },
+
+    tryToFill() {
+      this.handleScroll();
+    }
+
+  }
+};
+
+const _withId = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.withScopeId)("data-v-139436c2");
+
+(0,vue__WEBPACK_IMPORTED_MODULE_0__.pushScopeId)("data-v-139436c2");
+
+const _hoisted_1 = {
+  ref: "contenedor"
+};
+
+(0,vue__WEBPACK_IMPORTED_MODULE_0__.popScopeId)();
+
+const render = /*#__PURE__*/_withId((_ctx, _cache, $props, $setup, $data, $options) => {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default"), $data.cargando ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "cargando", {
+    key: 0
+  }) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("", true)], 512);
+});
+
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var css_248z = "\n\n";
+styleInject(css_248z);
+
+script.render = render;
+script.__scopeId = "data-v-139436c2";
+
+// Import vue component
+// IIFE injects install function into component, allowing component
+// to be registered via Vue.use() as well as Vue.component(),
+
+var entry_esm = /*#__PURE__*/(() => {
+  // Get component instance
+  const installable = script; // Attach install function executed by Vue.use()
+
+  installable.install = app => {
+    app.component('VSimpleInfiniteScroll', installable);
+  };
+
+  return installable;
+})(); // It's possible to expose named exports when writing components that can
+// also be used as directives, etc. - eg. import { RollupDemoDirective } from 'rollup-demo';
+// export const RollupDemoDirective = directive;
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (entry_esm);
+
 
 /***/ }),
 

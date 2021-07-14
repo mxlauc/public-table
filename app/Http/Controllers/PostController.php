@@ -16,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Post::with('user')->orderBy('id', 'DESC')->paginate(8);
+        return Post::with('user')->orderBy('id', 'DESC')->paginate(4);
     }
 
     /**
