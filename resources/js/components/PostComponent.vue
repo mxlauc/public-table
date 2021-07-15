@@ -297,7 +297,6 @@
         </div>
         <hr class="my-0" />
         <seccion-comentarios-component
-            :post-id="postId"
             @contador-actualizado="actualizarContador"
         ></seccion-comentarios-component>
     </div>
@@ -334,6 +333,11 @@ export default {
         "showPostPage",
         "fechaCreacion"
     ],
+    provide(){
+        return {
+            postId : this.postId
+        };
+    },
     inject: [
         "usuarioLoginId",
     ],

@@ -18,6 +18,7 @@ class Comment extends Model
         'descripcion',
         'user_id',
         'post_id',
+        'gif_url',
     ];
 
     /**

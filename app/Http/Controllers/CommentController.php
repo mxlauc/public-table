@@ -42,7 +42,8 @@ class CommentController extends Controller
         $comment = Comment::create([
             "descripcion" => $request->descripcion,
             "user_id" => $request->user()->id,
-            "post_id" => $id
+            "post_id" => $id,
+            "gif_url" => $request->gif_url,
         ]);
 
         return response()->json([

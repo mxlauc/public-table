@@ -11,6 +11,7 @@
                 <p class="m-0">
                     {{ comentario.descripcion }}
                 </p>
+                <img :src="comentario.gif_url" v-if="comentario.gif_url" class="img-fluid rounded">
             </span>
         </div>
         <div class="col col-auto">
@@ -58,7 +59,8 @@
 
 <script>
 export default {
-    props: ["comentario", "postId"],
+    props: ["comentario"],
+    inject: ["postId"]
 };
 </script>
 

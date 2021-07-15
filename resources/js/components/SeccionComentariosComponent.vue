@@ -14,8 +14,7 @@
                 <comentario-component
                     v-for="comentario in comentarios"
                     :key="comentario.id"
-                    :comentario="comentario"
-                    :post-id="postId">
+                    :comentario="comentario">
                 </comentario-component>
             </transition-group>
         </div>
@@ -27,13 +26,29 @@
                 <img v-bind:src="usuarioLoginImagen" class="imagenUsuario" />
             </div>
             <div class="col p-2">
-                <span
-                    v-bind:id="'cajaTexto' + postId"
-                    class="textarea text-break"
-                    contenteditable
-                    ref="textarea"
-                    @keydown="enviarComentario"
-                ></span>
+                <div class="row g-0 contenedorTextarea">
+                    <div class="col">
+                        <span
+                            v-bind:id="'cajaTexto' + postId"
+                            class="textarea text-break"
+                            contenteditable
+                            ref="textarea"
+                            @keydown="enviarComentario"
+                        ></span>
+                    </div>
+                    <div class="col col-auto" style="color: #777">
+                        <gif-picker-component @gif-seleccionado="recibirGif">
+                        </gif-picker-component>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 p-3 position-relative" v-if="gifSeleccionado">
+                <img :src="gifSeleccionado" class="w-100">
+                <button
+                    type="button"
+                    class="btn-close bg-white shadow position-absolute top-0 end-0 m-4 p-2 rounded-circle"
+                    aria-label="Close"
+                    @click="gifSeleccionado=null"></button>
             </div>
         </div>
         <!-- Modal Eliminar comentario -->
@@ -68,8 +83,8 @@
                                 />
                             </div>
                             <div class="col ps-2 pt-1 pb-1">
-                                <span
-                                    class="textarea text-break"
+                                <div
+                                    class="contenedorTextarea text-break p-2"
                                     style="font-size: 12px"
                                 >
                                     <label class="fw-bold">{{
@@ -78,7 +93,8 @@
                                     <p class="m-0">
                                         {{ comentarioAEliminar?.descripcion }}
                                     </p>
-                                </span>
+                                    <img :src="comentarioAEliminar?.gif_url" v-if="comentarioAEliminar?.gif_url" class="img-fluid rounded">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -132,13 +148,15 @@
                                 />
                             </div>
                             <div class="col p-2">
-                                <span
+                                <div class="contenedorTextarea">
+                                    <span
                                     class="textarea text-break"
                                     contenteditable
                                     ref="textareaEditar"
-                                >
-                                    {{ comentarioAEditar?.descripcion }}
-                                </span>
+                                    >
+                                        {{ comentarioAEditar?.descripcion }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -170,9 +188,11 @@
 
 <script>
 import ComentarioComponent from "./ComentarioComponent.vue";
+import GifPickerComponent from "./GifPickerComponent.vue";
 export default {
     components: {
         ComentarioComponent,
+        GifPickerComponent,
     },
     data() {
         return {
@@ -180,10 +200,10 @@ export default {
             comentariosPaginador: null,
             comentarioAEliminar: undefined,
             comentarioAEditar: undefined,
+            gifSeleccionado: null
         };
     },
-    props: ["postId"],
-    inject: ["usuarioLoginImagen", "usuarioLoginNombre"],
+    inject: ["usuarioLoginImagen", "usuarioLoginNombre", "postId"],
     emits: ["contadorActualizado"],
     mounted() {
         axios({
@@ -235,6 +255,7 @@ export default {
                     url: `/posts/${this.postId}/comments`,
                     data: {
                         descripcion: texto,
+                        gif_url: this.gifSeleccionado,
                     },
                 })
                     .then((response) => {
@@ -247,8 +268,9 @@ export default {
                                 name: this.usuarioLoginNombre,
                             },
                             descripcion: texto,
+                            gif_url: this.gifSeleccionado,
                         });
-
+                        this.gifSeleccionado = null;
                         this.$emit("contadorActualizado", response.data.count);
                     })
 
@@ -336,6 +358,9 @@ export default {
                     console.log(response);
                 });
         },
+        recibirGif(url){
+            this.gifSeleccionado = url;
+        }
     },
 };
 </script>
@@ -345,10 +370,13 @@ export default {
     border-radius: 50%;
     height: 30px;
 }
-
-.textarea {
+.contenedorTextarea{
     background-color: #eee;
     border-radius: 12px;
+}
+.textarea {
+
+
     outline: none;
     font-family: inherit;
     font-size: inherit;
