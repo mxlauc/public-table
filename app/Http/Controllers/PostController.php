@@ -16,6 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
+        $this->authorize(Post::class);
         return Post::with('user')->orderBy('id', 'DESC')->paginate(4);
     }
 
@@ -27,6 +28,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize(Post::class);
         if(!$request->user()){
             return; //no hay usuario
         }
@@ -53,7 +55,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
+
         $post = Post::with('user')->find($id);
+        $this->authorize($post);
         return view('post.show', compact('post'));
     }
 
@@ -65,7 +69,9 @@ class PostController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        Post::find($id)->delete();
+        $post = Post::find($id);
+        $this->authorize($post);
+        $post->delete();
         //return redirect()
         if($request->ajax()){
             return response()->json('ok');

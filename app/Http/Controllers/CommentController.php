@@ -19,6 +19,7 @@ class CommentController extends Controller
      */
     public function index(Request $request, $id)
     {
+        $this->authorize(Comment::class);
         if(!$request->page){
             $comments = Comment::with('user')->where('post_id', $id)->paginate(3);
             return redirect($comments->url($comments->lastPage()));
@@ -34,7 +35,8 @@ class CommentController extends Controller
      */
     public function store($id, Request $request)
     {
-
+        $post = Post::find($id);
+        $this->authorize(Comment::class);
         if(!$request->user()){
             return "";
         }
@@ -48,7 +50,7 @@ class CommentController extends Controller
 
         return response()->json([
             "id" => $comment->id,
-            "count" => Post::find($id)->comments()->count()
+            "count" => $post->comments()->count()
         ]);
     }
 
@@ -62,6 +64,7 @@ class CommentController extends Controller
     public function update(Request $request, $id)
     {
         $comment = Comment::find($id);
+        $this->authorize($comment);
         $comment->update([
             "descripcion" => $request->descripcion
         ]);
@@ -77,6 +80,7 @@ class CommentController extends Controller
     public function destroy($id)
     {
         $comment = Comment::find($id);
+        $this->authorize($comment);
         $postId = $comment->post_id;
         $comment->delete();
         return response()->json([

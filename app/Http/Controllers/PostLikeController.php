@@ -15,6 +15,7 @@ class PostLikeController extends Controller
      */
     public function index($postId)
     {
+        $this->authorize(Like::class);
         return Post::find($postId)->likes()->with('user')->orderBy('id', 'DESC')->paginate(2);
     }
 
@@ -26,6 +27,7 @@ class PostLikeController extends Controller
      */
     public function store(Request $request, $id)
     {
+        $this->authorize(Like::class);
         $miLike = false;
         $post = Post::find($id);
         $like = $post->likes()->where('user_id', $request->user()->id)->get()->first();
@@ -52,6 +54,9 @@ class PostLikeController extends Controller
     public function show(Request $request, $postId, $userId)
     {
         $like = Post::find($postId)->likes()->where('user_id', $userId)->get()->first();
+
+
+        $this->authorize('viewAny', Like::class);
 
         return response()->json([
             "miLike" => $like ? true : false,
