@@ -51,6 +51,7 @@ export default {
     mounted(){
         var myDropdown = document.getElementById('myDropdown' + this.postId)
         myDropdown.addEventListener('shown.bs.dropdown', ()=> {
+            this.$refs.input.focus();
             if(!sharedData.yaCargoElPrimerComponente){
                 sharedData.yaCargoElPrimerComponente = true;
                 this.cargarDefaultGifs();
