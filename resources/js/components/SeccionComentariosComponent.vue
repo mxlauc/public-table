@@ -274,9 +274,13 @@ export default {
                         this.$emit("contadorActualizado", response.data.count);
                     })
 
-                    .catch((response) => {
-                        console.log(response);
+                    .catch((error) => {
+                        let indices = Object.keys(error.response.data.errors);
+                        if(indices.length > 0){
+                            alert(error.response.data.errors[indices[0]]);
+                        }
                     });
+
             }
         },
         cargarMasComentarios() {

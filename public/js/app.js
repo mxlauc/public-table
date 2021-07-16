@@ -21487,8 +21487,12 @@ __webpack_require__.r(__webpack_exports__);
           _this2.gifSeleccionado = null;
 
           _this2.$emit("contadorActualizado", response.data.count);
-        })["catch"](function (response) {
-          console.log(response);
+        })["catch"](function (error) {
+          var indices = Object.keys(error.response.data.errors);
+
+          if (indices.length > 0) {
+            alert(error.response.data.errors[indices[0]]);
+          }
         });
       }
     },
