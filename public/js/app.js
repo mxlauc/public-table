@@ -21073,8 +21073,13 @@ __webpack_require__.r(__webpack_exports__);
         _this.ocultarModal();
       })
       /* handle error */
-      ["catch"](function (response) {
-        console.log(response);
+      ["catch"](function (error) {
+        console.log("faloo");
+        var indices = Object.keys(error.response.data.errors);
+
+        if (indices.length > 0) {
+          alert(error.response.data.errors[indices[0]]);
+        }
       });
     },
     ocultarModal: function ocultarModal() {
@@ -21261,7 +21266,7 @@ __webpack_require__.r(__webpack_exports__);
     } //calcular nuevo tamaño del texto de la publicacion
 
 
-    if (!this.imagen) {
+    if (!this.imagen && this.descripcion) {
       var l = this.descripcion.length;
 
       if (l < 100) {
@@ -21291,6 +21296,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     calcularTruncamiento: function calcularTruncamiento() {
+      if (!this.descripcion) {
+        return;
+      }
+
       var tamanoLineas = 40;
       var maxLineas = 5;
       var contadorLineas = 0;
@@ -22265,7 +22274,7 @@ var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Eliminar ");
 
 var _hoisted_24 = {
-  "class": "card-body"
+  "class": "card-body pb-2"
 };
 var _hoisted_25 = {
   "class": "row g-0"
@@ -22351,12 +22360,10 @@ var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(
 
 var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Eliminar publicación ");
 
-var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("hr", {
+var _hoisted_36 = {
+  key: 0,
   "class": "my-2"
-}, null, -1
-/* HOISTED */
-);
-
+};
 var _hoisted_37 = {
   "class": "text-center"
 };
@@ -22598,7 +22605,8 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     "data-bs-target": '#eliminarPostModal' + $props.postId
   }, [_hoisted_34, _hoisted_35], 8
   /* PROPS */
-  , ["data-bs-target"])])])])]), _hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("p", {
+  , ["data-bs-target"])])])])]), $props.descripcion ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("hr", _hoisted_36)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.descripcion ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("p", {
+    key: 1,
     "class": "card-text",
     style: [{
       fontSize: $data.fontSize + 'px'
@@ -22623,7 +22631,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     })
   }, "(Ver menos)")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 4
   /* STYLE */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_37, [$props.imagen ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("img", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_37, [$props.imagen ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("img", {
     key: 0,
     src: $props.imagen,
     "class": ["img-fluid", {

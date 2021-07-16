@@ -135,7 +135,7 @@
         style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1)"
         ref="card"
     >
-        <div class="card-body">
+        <div class="card-body pb-2">
             <div class="row g-0">
                 <div class="col col-auto">
                     <img
@@ -214,8 +214,8 @@
                     </ul>
                 </div>
             </div>
-            <hr class="my-2" />
-            <p class="card-text" :style="{ fontSize: fontSize + 'px' }" style="white-space:pre-wrap;">
+            <hr class="my-2" v-if="descripcion">
+            <p class="card-text" :style="{ fontSize: fontSize + 'px' }" style="white-space:pre-wrap;" v-if="descripcion">
                 {{mostrarDescripcion}}
                 <span class="fw-bold" role="button" @click="isTextoTruncado=false" v-if="truncarTexto && isTextoTruncado">(Ver más)</span>
                 <span class="fw-bold" role="button" @click="isTextoTruncado=true" v-if="truncarTexto && !isTextoTruncado">(Ver menos)</span>
@@ -356,7 +356,7 @@ export default {
             }).observe(this.$refs.card);
         }
         //calcular nuevo tamaño del texto de la publicacion
-        if (!this.imagen) {
+        if (!this.imagen && this.descripcion) {
             var l = this.descripcion.length;
             if (l < 100) {
                 this.fontSize = 26;
@@ -385,6 +385,9 @@ export default {
     },
     methods: {
         calcularTruncamiento(){
+            if(!this.descripcion){
+                return;
+            }
             let tamanoLineas = 40;
             let maxLineas = 5;
             let contadorLineas = 0;
