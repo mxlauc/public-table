@@ -36,11 +36,11 @@ export default {
     },
     methods: {
         cargarMasPosts(scroller){
-            let url = this.postsPaginador ? this.postsPaginador.next_page_url : '/posts';
+            let url = this.postsPaginador ? this.postsPaginador.next : '/posts';
             if(url){
                 axios.get(url)
                 .then(response=>{
-                    this.postsPaginador = response.data;
+                    this.postsPaginador = response.data.links;
                     this.posts = this.posts.concat(response.data.data);
                     scroller.loaded();
                 })

@@ -1,7 +1,7 @@
 <template>
     <div>
         <a
-            v-if="comentariosPaginador && comentariosPaginador.prev_page_url"
+            v-if="comentariosPaginador && comentariosPaginador.prev"
             class="text-muted fw-bold ms-2"
             style="font-size: 12px; text-decoration:none"
             role="button"
@@ -211,8 +211,8 @@ export default {
             url: `/posts/${this.postId}/comments`,
         })
             .then((response) => {
-                this.$emit("contadorActualizado", response.data.total);
-                this.comentariosPaginador = response.data;
+                this.$emit("contadorActualizado", response.data.meta.total);
+                this.comentariosPaginador = response.data.links;
                 this.comentarios = response.data.data;
             })
             .catch((response) => {
@@ -286,10 +286,10 @@ export default {
         cargarMasComentarios() {
             axios({
                 method: "get",
-                url: this.comentariosPaginador.prev_page_url,
+                url: this.comentariosPaginador.prev,
             })
                 .then((response) => {
-                    this.comentariosPaginador = response.data;
+                    this.comentariosPaginador = response.data.links;
                     this.comentarios = response.data.data.concat(
                         this.comentarios
                     );

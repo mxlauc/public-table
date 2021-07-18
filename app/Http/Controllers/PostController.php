@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
+use App\Http\Resources\PostResource;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class PostController extends Controller
     public function index()
     {
         $this->authorize(Post::class);
-        return Post::with('user')->orderBy('id', 'DESC')->paginate(4);
+        return PostResource::collection(Post::with('user')->orderBy('id', 'DESC')->paginate(4));
     }
 
     /**
@@ -57,8 +58,9 @@ class PostController extends Controller
     public function show($id)
     {
 
-        $post = Post::with('user')->find($id);
-        $this->authorize($post);
+        $postModel = Post::with('user')->find($id);
+        $this->authorize($postModel);
+        $post = new PostResource($postModel);
         return view('post.show', compact('post'));
     }
 

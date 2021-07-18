@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\LikeResource;
 use App\Models\Like;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ class PostLikeController extends Controller
     public function index($postId)
     {
         $this->authorize(Like::class);
-        return Post::find($postId)->likes()->with('user')->orderBy('id', 'DESC')->paginate(2);
+        return LikeResource::collection(Post::find($postId)->likes()->with('user')->orderBy('id', 'DESC')->paginate(2));
     }
 
     /**

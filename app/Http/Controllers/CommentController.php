@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
+use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Post;
 
@@ -25,7 +26,7 @@ class CommentController extends Controller
             $comments = Comment::with('user')->where('post_id', $id)->paginate(3);
             return redirect($comments->url($comments->lastPage()));
         }
-        return Comment::with('user')->where('post_id', $id)->paginate(3);
+        return CommentResource::collection(Comment::with('user')->where('post_id', $id)->paginate(3));
     }
 
     /**

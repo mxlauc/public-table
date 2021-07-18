@@ -148,12 +148,10 @@ export default {
 
                 /* handle error */
                 .catch((error) => {
-                    console.log("faloo");
                     let indices = Object.keys(error.response.data.errors);
                     if(indices.length > 0){
                         alert(error.response.data.errors[indices[0]]);
                     }
-
                 });
         },
         ocultarModal() {
