@@ -370,9 +370,7 @@ export default {
             }
         }
 
-        if(this.usuarioLoginId){
-            this.obtenerMiLike();
-        }
+        this.obtenerMiLike();
         var thisComponent = this;
         var myModalEl = document.getElementById('likesPost' + this.postId)
         myModalEl.addEventListener('shown.bs.modal', function (event) {
@@ -440,7 +438,7 @@ export default {
             });
         },
         obtenerMiLike(){
-            axios.get(`/posts/${this.postId}/likes/${this.usuarioLoginId}`)
+            axios.get(`/posts/${this.postId}/likes/${this.usuarioLoginId ? this.usuarioLoginId : '0'}`)
             .then(response=>{
                 this.likeInfo = response.data;
             })
