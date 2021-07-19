@@ -55,19 +55,20 @@
     position: relative;
     overflow: hidden;
     width: 100%;
-    height: 400px;
+    height: 450px;
     ">
     <img
         :src="user?.avatar"
         style="
         position: absolute;
+        object-fit: cover;
         left: -50px;
         top: -50px;
         width: calc(100% + 100px);
-        height: 500px;
+        height: 550px;
         filter: blur(40px);
         ">
-    <div style="position: relative; height: 400px; background-color: rgba(0, 0, 0, 0.3)">
+    <div style="position: relative; height: 450px; background-color: rgba(0, 0, 0, 0.3)">
         <div class="container text-white text-center p-5" style="font-family: 'Secular One', sans-serif; text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);">
             <img :src="user?.avatar" class="rounded-circle" style="height: 100px; border: 4px solid white">
             <h2>{{user?.name}}</h2>
@@ -75,43 +76,47 @@
                 <a :href="user?.url" class="text-decoration-none text-white">@{{user?.user_name}}</a>
             </div>
 
-            <button
-                type="button"
-                class="btn btn-sm btn-outline-light"
-                data-bs-toggle="modal"
-                data-bs-target="#editarNombreUsuarioModal">
-                {{user?.user_name ? 'Editar' : 'Crear un'}} nombre de usuario
-            </button>
-            <br>
-            <button type="button" class="btn btn-sm btn-outline-light">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-check-fill" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                </svg>
-                Seguiendo
-            </button>
-            <br>
-            <button type="button" class="btn btn-sm btn-outline-light">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
-                <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
-                </svg>
-                Seguir
-            </button>
+            <div class="mt-2">
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-light"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editarNombreUsuarioModal"
+                    v-if="usuarioLoginId == usuarioId">
+                    {{user?.user_name ? 'Editar' : 'Crear un'}} nombre de usuario
+                </button>
+                <div v-else-if="usuarioLoginId">
+                    <button type="button" class="btn btn-sm btn-outline-light" v-if="userData?.following" @click="toggleSeguir">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                        </svg>
+                        Seguiendo
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-light" v-else @click="toggleSeguir">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                        </svg>
+                        Seguir
+                    </button>
+                </div>
+
+            </div>
 
             <div class="row justify-content-center mt-3">
                 <div class="col col-auto">
                     <div class="row gx-5">
                         <div class="col col-12 col-sm-4" style="min-width: 33%">
-                            <h3>45</h3>
+                            <h3>{{userData?.posts}}</h3>
                             <h6>publicaciones</h6>
                         </div>
                         <div class="col col-6 col-sm-4" style="min-width: 33%">
-                            <h3>45</h3>
+                            <h3>{{userData?.followers}}</h3>
                             <h6>Seguidores</h6>
                         </div>
                         <div class="col col-6 col-sm-4" style="min-width: 33%">
-                            <h3>34</h3>
+                            <h3>{{userData?.followeds}}</h3>
                             <h6>Seguidos</h6>
                         </div>
                     </div>
@@ -126,11 +131,14 @@ export default {
     data(){
         return {
             user : null,
+            userData : null,
         }
     },
     props: ["usuarioId"],
+    inject: ["usuarioLoginId"],
     mounted(){
         this.cargarUsuario();
+        this.consultarSiguiendo();
     },
     methods :{
         cargarUsuario(){
@@ -155,6 +163,26 @@ export default {
             .catch(response=>{
                 console.log(response);
             })
+        },
+        consultarSiguiendo(){
+            axios.get('/followers/' + this.usuarioId)
+            .then(response=>{
+                this.userData = response.data;
+                console.log(response.data);
+            })
+            .catch(response=>{
+                console.log(response);
+            });
+        },
+        toggleSeguir(){
+            axios.post('/followers/' + this.usuarioId)
+            .then(response=>{
+                this.userData = response.data;
+                console.log(response.data);
+            })
+            .catch(response=>{
+                console.log(response);
+            });
         }
     }
 }

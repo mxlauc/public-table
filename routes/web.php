@@ -9,6 +9,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,6 +46,44 @@ Route::get('/@{id}', function ($id) {
 
 
 });
+
+Route::post('followers/{user}', function (Request $request, User $user) {
+
+    $siguiendo = false;
+    if(DB::table('user_user')->whereFollowerId($request->user()->id)->whereFollowedId($user->id)->count()){
+        $request->user()->followeds()->detach($user->id);
+    }else{
+        $request->user()->followeds()->syncWithoutDetaching($user->id);
+        $siguiendo = true;
+    }
+    $followers = DB::table('user_user')->whereFollowedId($user->id)->count();
+    $followeds = DB::table('user_user')->whereFollowerId($user->id)->count();
+    $posts = DB::table('posts')->whereUserId($user->id)->count();
+    return response()->json([
+        "following" => $siguiendo,
+        "followers" => $followers,
+        "followeds" => $followeds,
+        "posts" => $posts,
+        ]);
+})->middleware('can:follow,user');
+
+Route::get('followers/{id}', function (Request $request, int $id) {
+    $count = 0;
+    if($request->user()){
+        $count = DB::table('user_user')->whereFollowerId($request->user()->id)->whereFollowedId($id)->count();
+    }
+    $followers = DB::table('user_user')->whereFollowedId($id)->count();
+    $followeds = DB::table('user_user')->whereFollowerId($id)->count();
+    $posts = DB::table('posts')->whereUserId($id)->count();
+    return response()->json([
+        "following" => $count > 0,
+        "followers" => $followers,
+        "followeds" => $followeds,
+        "posts" => $posts,
+        ]);
+});
+
+
 
 Route::get('login/google', [LoginController::class, 'redirectToProvider'])->name('social.auth');
 Route::get('logout', [LoginController::class, 'logout'])->name('social.auth.logout');

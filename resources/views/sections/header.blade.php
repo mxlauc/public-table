@@ -18,13 +18,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
+            <ul class="ms-auto navbar-nav">
                 @auth
                 <li class="nav-item dropdown">
                     <a class="nav-link active dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

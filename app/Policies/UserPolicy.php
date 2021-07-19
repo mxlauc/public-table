@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
@@ -89,5 +90,12 @@ class UserPolicy
     public function forceDelete(User $user, User $model)
     {
         return false;
+    }
+
+    public function follow(User $user, User $model)
+    {
+        return $user->id === $model->id
+            ? Response::deny("No puedes seguirte a ti mismo.")
+            : Response::allow();
     }
 }
