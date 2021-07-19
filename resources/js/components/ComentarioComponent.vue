@@ -3,7 +3,7 @@
         <div class="col col-auto py-1 ps-2">
             <img v-bind:src="comentario.user.avatar" class="imagenUsuario" />
         </div>
-        <div class="col ps-2 pt-1 pb-1">
+        <div class="col col-auto ps-2 pt-1 pb-1" style="max-width: 70%">
             <span class="textarea text-break" style="font-size: 12px">
                 <label class="fw-bold">
                     {{ comentario.user.name }}
