@@ -32,14 +32,14 @@
                         {{ strtok(Auth::user()->name, ' ') }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="{{Auth::user()->getUrl()}}">Mi perfil</a></li>
                       <li><a class="dropdown-item" href="#">Another action</a></li>
                       <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item" href="{{ route('social.auth.logout') }}">Cerrar sesión</a>
                       </li>
                     </ul>
                   </li>
-                  @else
+                @else
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="{{ route('social.auth') }}">Iniciar
                             Sesión</a>

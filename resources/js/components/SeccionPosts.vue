@@ -2,11 +2,12 @@
     <v-simple-infinite-scroll @cargar="cargarMasPosts" :distance="250">
         <template #default>
             <div class="row masonry-row justify-content-center">
-                <div class="col col-12 col-md-6 col-lg-4 col-xl-3" v-for="post in posts" v-bind:key="post.id">
+                <div class="col" :class="[classItem]"  v-for="post in posts" v-bind:key="post.id">
                     <post-component
                         :post-id="post.id"
                         :usuario-nombre="post.user.name"
                         :usuario-imagen="post.user.avatar"
+                        :usuario-url="post.user.url"
                         :imagen="post.imagen"
                         :descripcion="post.descripcion"
                         :fecha-creacion="post.created_at"
@@ -21,9 +22,11 @@
 </template>
 <script>
 import VSimpleInfiniteScroll from 'v-simple-infinite-scroll';
+import PostComponent from './PostComponent.vue';
 export default {
     components: {
         VSimpleInfiniteScroll,
+        PostComponent,
     },
     data(){
         return {
@@ -31,12 +34,22 @@ export default {
             postsPaginador: null
         };
     },
+    props:{
+        classItem : {
+            type : String,
+            default : 'col-12 col-md-6 col-lg-4 col-xl-3',
+        },
+        url : {
+            type : String,
+            default : '/posts',
+        }
+    },
     mounted(){
 
     },
     methods: {
         cargarMasPosts(scroller){
-            let url = this.postsPaginador ? this.postsPaginador.next : '/posts';
+            let url = this.postsPaginador ? this.postsPaginador.next : this.url;
             if(url){
                 axios.get(url)
                 .then(response=>{

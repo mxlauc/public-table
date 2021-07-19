@@ -3,9 +3,10 @@ require('masonry-layout');
 //import createApp from 'vue'
 window.Vue = require('vue');
 window.bootstrap = require('bootstrap');;
-window.PostComponent =  require('./components/PostComponent.vue').default;
+window.PostComponent =              require('./components/PostComponent.vue').default;
 window.CrearPublicacionComponent =  require('./components/CrearPublicacionComponent.vue').default;
-window.SeccionPosts = require('./components/SeccionPosts.vue').default;
+window.SeccionPosts =               require('./components/SeccionPosts.vue').default;
+window.UserHeaderComponent =        require('./components/UserHeaderComponent.vue').default;
 
 window.VWave = require('v-wave').default;
 

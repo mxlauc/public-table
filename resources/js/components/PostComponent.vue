@@ -138,26 +138,28 @@
         <div class="card-body pb-2">
             <div class="row g-0">
                 <div class="col col-auto">
-                    <img
+                    <a :href="usuarioUrl">
+                        <img
                         v-if="usuarioImagen"
                         v-bind:src="usuarioImagen"
                         class="rounded-circle"
                         :class="{
                             imgGrande: showPostPage,
                             imgPequeno: !showPostPage,
-                        }"
-                    />
+                        }">
+                    </a>
                 </div>
                 <div class="col px-2">
-                    <p
-                        class="fw-bold m-0 p-0"
+                    <a
+                        :href="usuarioUrl"
+                        class="fw-bold m-0 p-0 text-decoration-none text-dark"
                         :class="{
                             'text-16': showPostPage,
                             'text-12': !showPostPage,
                         }"
                     >
                         {{ usuarioNombre }}
-                    </p>
+                    </a>
                     <a
                         style="text-decoration:none"
                         v-bind:href="'/posts/' + postId"
@@ -331,7 +333,8 @@ export default {
         "imagen",
         "descripcion",
         "showPostPage",
-        "fechaCreacion"
+        "fechaCreacion",
+        "usuarioUrl",
     ],
     provide(){
         return {

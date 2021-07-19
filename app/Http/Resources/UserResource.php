@@ -18,6 +18,8 @@ class UserResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "avatar" => $this->avatar,
+            "user_name" => $this->user_name,
+            "url" => $this->user_name ? "/@$this->user_name" : "/users/$this->id",
         ];
     }
 }

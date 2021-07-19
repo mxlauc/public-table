@@ -5,17 +5,18 @@
 
 @section('script')
     <script>
-        app.component('post-component', PostComponent);
         app.component('crear-publicacion-component', CrearPublicacionComponent);
-        app.component('seccion-posts', SeccionPosts);
+        app.component('seccion-posts-component', SeccionPosts);
     </script>
 @endsection
 
 @section('content')
-    @auth
+    <div class="container pt-5">
+        @auth
         <crear-publicacion-component>
         </crear-publicacion-component>
-    @endauth
-    <seccion-posts></seccion-posts>
+        @endauth
+        <seccion-posts-component></seccion-posts-component>
+    </div>
 
 @endsection
