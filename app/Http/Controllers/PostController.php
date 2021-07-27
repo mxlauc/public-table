@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewPostFollowed;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Comment;
@@ -40,11 +41,13 @@ class PostController extends Controller
             $imagen = $request->file('imagen')->store('public/imagenes');
         }
 
-        Post::create([
+        $post = Post::create([
             "descripcion" => $request->descripcion,
             "imagen" => $imagen,
             "user_id" => $request->user()->id,
         ]);
+
+        NewPostFollowed::dispatch($request->user(), $post);
 
         return response()->json('ok');
     }
@@ -55,8 +58,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
+        if($request->get('notification')){
+            $request->user()->notifications->where("id", $request->get('notification'))->markAsRead();
+        }
 
         $postModel = Post::with('user')->find($id);
         $this->authorize($postModel);

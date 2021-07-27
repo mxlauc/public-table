@@ -350,7 +350,7 @@ export default {
         var thisComponent = this;
         setTimeout(function(){
             thisComponent.$refs.card.classList.add("cardPostVisible");
-        }, Math.random() * 500);
+        }, Math.random() * 600);
         if (!this.showPostPage) {
             new ResizeObserver(function () {
                 var msnry = new Masonry(".masonry-row", {
@@ -457,28 +457,7 @@ export default {
             });
         },
         establecerFechaCreacionDisplay(){
-            var ahora = Date.now();
-            var diferencia = (ahora/ 1000) - this.fechaCreacion;
-            if(diferencia < 60){
-                this.fechaCreacionDisplay = "Hace un momento";
-            }else if(diferencia < 60 * 60){
-                var m = Math.trunc(diferencia / 60);
-                this.fechaCreacionDisplay = `Hace ${m} minutos`;
-            }else if(diferencia < 60 * 60 * 24){
-                var h = Math.trunc(diferencia / 60 / 60);
-                this.fechaCreacionDisplay = `Hace ${h} horas`;
-            }else if (diferencia < 60 * 60 * 24 * 4){
-                var d = Math.trunc(diferencia / 60 / 60 / 24);
-                this.fechaCreacionDisplay = `Hace ${d} días`;
-            }else{
-                var meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-                var fecha = new Date(this.fechaCreacion * 1000);
-                var d = fecha.getDate();
-                var m = meses[fecha.getMonth()];
-                var h = fecha.getHours();
-                var mm = fecha.getMinutes();
-                this.fechaCreacionDisplay = ` ${d} de ${m} a las ${h}:${mm < 10 ? '0' + mm : mm}`;
-            }
+            this.fechaCreacionDisplay = this.timeAgo(this.fechaCreacion);
         },
         actualizarContador(count){
             this.cantidadComentariosDisplay = count;
@@ -510,11 +489,16 @@ export default {
 }
 .cardPostInvisible{
     opacity: 0;
+    transform: translateY(100px);
+
 }
 .cardPostVisible{
     opacity: 1;
+    transform: translateY(0px);
 }
 .card{
-    transition: opacity 0.6s ease-out;
+    transition:
+        opacity 0.5s ease-out 0.25s,
+        transform 0.5s ease-out 0.25s;
 }
 </style>

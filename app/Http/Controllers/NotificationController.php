@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotification;
 
-class UserController extends Controller
+class NotificationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -45,18 +44,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show($id)
     {
-        if($request->get('notification')){
-            $request->user()->notifications->where("id", $request->get('notification'))->markAsRead();
-        }
-
-        if($request->ajax()){
-            return new UserResource(User::find($id));
-        }
-
-        $user = User::find($id);
-        return view('user.show', compact('user'));
+        //
     }
 
     /**
@@ -79,10 +69,15 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-        $this->authorize($user);
-        $user->update($request->all());
-        return new UserResource($user);
+        $notification = DatabaseNotification::find($id);
+        $notification->update([
+            "read_at" => $notification->read_at ? null : now()
+        ]);
+        return response()->json([
+            "unread" => $request->user()->unreadNotifications->count(),
+            "id" => $id,
+            "readed" => $notification->read_at ? true : false
+        ]);
     }
 
     /**
@@ -91,8 +86,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        DatabaseNotification::find($id)->delete();
+
+        return response()->json([
+            "unread" => $request->user()->unreadNotifications->count(),
+            "id" => $id,
+        ]);
     }
 }

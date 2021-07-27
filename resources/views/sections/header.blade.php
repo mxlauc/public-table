@@ -21,6 +21,9 @@
             <ul class="ms-auto navbar-nav">
                 @auth
                 <li class="nav-item dropdown">
+                    <notifications-component></notifications-component>
+                </li>
+                <li class="nav-item dropdown">
                     <a class="nav-link active dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img class="rounded" src="{{ Auth::user()->avatar }}" width="22" height="22">
                         {{ strtok(Auth::user()->name, ' ') }}

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewComment;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
@@ -49,6 +50,8 @@ class CommentController extends Controller
             "post_id" => $id,
             "gif_url" => $request->gif_url,
         ]);
+
+        NewComment::dispatch($post, $request->user(), $comment);
 
         return response()->json([
             "id" => $comment->id,

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewLike;
 use App\Http\Resources\LikeResource;
 use App\Models\Like;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostLikeController extends Controller
 {
@@ -34,11 +36,14 @@ class PostLikeController extends Controller
         $like = $post->likes()->where('user_id', $request->user()->id)->get()->first();
         if($like){
             $like->delete();
+            //TODO: add type to querys COMMENTS LIKE ETC...
+            DB::table('notifications')->where("data->post", $post->id)->where("data->tipo", "likePost")->where("data->user->id", $request->user()->id)->delete();
         }else{
             $post->likes()->create([
                 "user_id" => $request->user()->id
             ]);
             $miLike = true;
+            NewLike::dispatch($post, $request->user());
         }
         return response()->json([
             "miLike" => $miLike,

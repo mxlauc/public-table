@@ -7,6 +7,7 @@
     <script>
         app.component('crear-publicacion-component', CrearPublicacionComponent);
         app.component('seccion-posts-component', SeccionPosts);
+        app.component('notifications-component', NotificationsComponent);
     </script>
 @endsection
 

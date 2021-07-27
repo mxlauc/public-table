@@ -2,6 +2,15 @@
 
 namespace App\Providers;
 
+use App\Events\NewFollower;
+use App\Listeners\SendNewFollowerNotification;
+use App\Events\NewLike;
+use App\Listeners\SendNewLikeNotification;
+use App\Events\NewComment;
+use App\Listeners\SendNewCommentNotification;
+use App\Events\NewPostFollowed;
+use App\Listeners\SendNewPostFollowedNotification;
+
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,6 +26,18 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        NewFollower::class => [
+            SendNewFollowerNotification::class,
+        ],
+        NewLike::class => [
+            SendNewLikeNotification::class,
+        ],
+        NewComment::class => [
+            SendNewCommentNotification::class,
+        ],
+        NewPostFollowed::class => [
+            SendNewPostFollowedNotification::class,
         ],
     ];
 

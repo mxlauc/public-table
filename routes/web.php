@@ -1,16 +1,23 @@
 <?php
 
+use App\Events\NewFollower as EventsNewFollower;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\UserController;
+use App\Http\Resources\NotificationCollection;
+use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,13 +55,17 @@ Route::get('/@{id}', function ($id) {
 });
 
 Route::post('followers/{user}', function (Request $request, User $user) {
+    error_log('Some message here.');
 
     $siguiendo = false;
     if(DB::table('user_user')->whereFollowerId($request->user()->id)->whereFollowedId($user->id)->count()){
         $request->user()->followeds()->detach($user->id);
+        DB::table('notifications')->where("notifiable_id", $user->id)->where("data->user->id", $request->user()->id)->delete();
     }else{
         $request->user()->followeds()->syncWithoutDetaching($user->id);
         $siguiendo = true;
+
+        EventsNewFollower::dispatch($user, $request->user());
     }
     $followers = DB::table('user_user')->whereFollowedId($user->id)->count();
     $followeds = DB::table('user_user')->whereFollowerId($user->id)->count();
@@ -83,6 +94,18 @@ Route::get('followers/{id}', function (Request $request, int $id) {
         ]);
 });
 
+
+Route::get('notificaciones', function (Request $request) {
+    $notificaciones = DB::table('notifications')->get()->toArray();
+
+    return view("notifications", compact("notificaciones"));
+});
+
+Route::get('misNotificaciones', function (Request $request) {
+    return new NotificationCollection($request->user()->notifications()->paginate(3));
+});
+
+Route::resource('notificaciones', NotificationController::class)->names('notificaciondes')->only(['destroy', 'update']);
 
 
 Route::get('login/google', [LoginController::class, 'redirectToProvider'])->name('social.auth');
