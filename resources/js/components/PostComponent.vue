@@ -494,7 +494,7 @@ export default {
 }
 .cardPostVisible{
     opacity: 1;
-    transform: translateY(0px);
+    transform: unset;
 }
 .card{
     transition:
