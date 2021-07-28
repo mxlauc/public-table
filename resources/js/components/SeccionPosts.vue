@@ -1,5 +1,5 @@
 <template>
-    <v-simple-infinite-scroll @cargar="cargarMasPosts" :distance="100">
+    <v-simple-infinite-scroll @load="cargarMasPosts" :distance="0">
         <template #default>
             <div class="row masonry-row justify-content-center">
                 <div class="col" :class="[classItem]"  v-for="post in posts" v-bind:key="post.id">
@@ -14,7 +14,7 @@
                         :show-post-page="false">
                     </post-component>
                 </div>
-                <div class="col" :class="[classItem]" id="v-simple-infinite-scroll-bottom">
+                <div class="v-simple-infinite-scroll-bottom col" :class="[classItem]">
                 </div>
             </div>
         </template>

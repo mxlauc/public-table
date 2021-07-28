@@ -14,18 +14,26 @@
         </div>
 
     </a>
-    <div class="dropdown-menu dropdown-menu-end shadow-lg" style="min-width:400px;min-helight:500px;max-height:80vh;overflow-y:auto;overflow-x:hidden;">
-        <notification-component v-for="notificacion in notificaciones" :key="notificacion"
-            :id="notificacion.id"
-            :imagen="notificacion.imagen"
-            :descripcion="notificacion.descripcion"
-            :visto="notificacion.visto"
-            :timestamp="notificacion.timestamp"
-            :url="notificacion.url"
-            @deleted="onDeleted"
-            @updated="onUpdated">
-        </notification-component>
-        <button @click="getNotifications" v-if="notificacionesPaginador?.next">cargar mas</button>
+    <div class="dropdown-menu dropdown-menu-end v-simple-infinite-scroll-container shadow-lg" style="
+        min-width:400px;
+        max-height:80vh;
+        overflow-y:auto;
+        overflow-x:hidden;">
+        <v-simple-infinite-scroll
+            @load="getNotifications"
+            :load-to-fill="false"
+            :distance="100">
+            <notification-component v-for="notificacion in notificaciones" :key="notificacion"
+                :id="notificacion.id"
+                :imagen="notificacion.imagen"
+                :descripcion="notificacion.descripcion"
+                :visto="notificacion.visto"
+                :timestamp="notificacion.timestamp"
+                :url="notificacion.url"
+                @deleted="onDeleted"
+                @updated="onUpdated">
+            </notification-component>
+        </v-simple-infinite-scroll>
     </div>
 </template>
 <script>
@@ -44,21 +52,22 @@ export default {
             notificacionesPaginador : null,
         }
     },
-    mounted(){
-        this.getNotifications();
-    },
     methods: {
-        getNotifications(){
+        getNotifications(scroll){
             let url = this.notificacionesPaginador ? this.notificacionesPaginador.next : "/misNotificaciones";
-            console.log(url);
             if(url){
                 axios.get(url)
                 .then(response=>{
                     this.notificaciones = this.notificaciones.concat(response.data.data);
                     this.notificacionesPaginador = response.data.links;
-
                     this.total = response.data.meta.unread;
-                    console.log(response.data);
+                    if(response.data.links.next){
+                        scroll.loaded();
+                    }else{
+                        scroll.complete();
+                    }
+
+
                 });
             }
         },

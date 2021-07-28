@@ -102,7 +102,7 @@ Route::get('notificaciones', function (Request $request) {
 });
 
 Route::get('misNotificaciones', function (Request $request) {
-    return new NotificationCollection($request->user()->notifications()->paginate(3));
+    return new NotificationCollection($request->user()->notifications()->paginate(10));
 });
 
 Route::resource('notificaciones', NotificationController::class)->names('notificaciondes')->only(['destroy', 'update']);
