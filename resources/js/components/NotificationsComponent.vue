@@ -54,7 +54,7 @@ export default {
     },
     methods: {
         getNotifications(scroll){
-            let url = this.notificacionesPaginador ? this.notificacionesPaginador.next : "/misNotificaciones";
+            let url = this.notificacionesPaginador ? this.notificacionesPaginador.next : "/notificaciones";
             if(url){
                 axios.get(url)
                 .then(response=>{

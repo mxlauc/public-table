@@ -2,12 +2,14 @@
 
 use App\Events\NewFollower as EventsNewFollower;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserPostsController;
 use App\Http\Resources\NotificationCollection;
 use App\Http\Resources\NotificationResource;
 use App\Http\Resources\PostResource;
@@ -38,64 +40,17 @@ Route::resource('posts.likes', PostLikeController::class)->names('posts.likes')-
 Route::get('posts/{post}/likes/{user}', [PostLikeController::class, 'show'])->name('posts.likes.show');
 Route::resource('posts.comments', CommentController::class)->names("comments")->shallow()->except(['show', 'edit', 'create']);
 Route::resource('users', UserController::class)->names("users")->except(["index", "create", "store", "edit", "destroy"]);
-
-Route::get('users/{id}/posts', function ($id) {
-    return PostResource::collection(Post::with('user')->where("user_id", $id)->orderBy('id', 'DESC')->paginate(4));
-});
-
 Route::get('/@{user:user_name}', [UserController::class, 'show']);
 
-Route::post('followers/{user}', function (Request $request, User $user) {
-    error_log('Some message here.');
 
-    $siguiendo = false;
-    if(DB::table('user_user')->whereFollowerId($request->user()->id)->whereFollowedId($user->id)->count()){
-        $request->user()->followeds()->detach($user->id);
-        DB::table('notifications')->where("notifiable_id", $user->id)->where("data->user->id", $request->user()->id)->delete();
-    }else{
-        $request->user()->followeds()->syncWithoutDetaching($user->id);
-        $siguiendo = true;
-
-        EventsNewFollower::dispatch($user, $request->user());
-    }
-    $followers = DB::table('user_user')->whereFollowedId($user->id)->count();
-    $followeds = DB::table('user_user')->whereFollowerId($user->id)->count();
-    $posts = DB::table('posts')->whereUserId($user->id)->count();
-    return response()->json([
-        "following" => $siguiendo,
-        "followers" => $followers,
-        "followeds" => $followeds,
-        "posts" => $posts,
-        ]);
-})->middleware('can:follow,user');
-
-Route::get('followers/{id}', function (Request $request, int $id) {
-    $count = 0;
-    if($request->user()){
-        $count = DB::table('user_user')->whereFollowerId($request->user()->id)->whereFollowedId($id)->count();
-    }
-    $followers = DB::table('user_user')->whereFollowedId($id)->count();
-    $followeds = DB::table('user_user')->whereFollowerId($id)->count();
-    $posts = DB::table('posts')->whereUserId($id)->count();
-    return response()->json([
-        "following" => $count > 0,
-        "followers" => $followers,
-        "followeds" => $followeds,
-        "posts" => $posts,
-        ]);
-});
+Route::get('users/{id}/posts', [UserPostsController::class, 'posts']);
 
 
-Route::get('notificaciones', function (Request $request) {
-    $notificaciones = DB::table('notifications')->get()->toArray();
+Route::post('followers/{user}', [FollowerController::class, 'follow'])->middleware('can:follow,user');
+Route::get('followers/{user}', [FollowerController::class, 'getFollowers']);
 
-    return view("notifications", compact("notificaciones"));
-});
 
-Route::get('misNotificaciones', function (Request $request) {
-    return new NotificationCollection($request->user()->notifications()->paginate(10));
-});
-
+Route::get('notificaciones', [NotificationController::class, 'index']);
 Route::resource('notificaciones', NotificationController::class)->names('notificaciondes')->only(['destroy', 'update']);
 
 
