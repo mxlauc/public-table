@@ -8,6 +8,7 @@
         app.component('crear-publicacion-component', CrearPublicacionComponent);
         app.component('seccion-posts-component', SeccionPosts);
         app.component('notifications-component', NotificationsComponent);
+        app.component('guide-component', GuideComponent);
     </script>
 @endsection
 

@@ -8,6 +8,7 @@ window.CrearPublicacionComponent =  require('./components/CrearPublicacionCompon
 window.SeccionPosts =               require('./components/SeccionPosts.vue').default;
 window.UserHeaderComponent =        require('./components/UserHeaderComponent.vue').default;
 window.NotificationsComponent =     require('./components/NotificationsComponent.vue').default;
+window.GuideComponent =             require('./components/GuideComponent.vue').default;
 
 window.VWave = require('v-wave').default;
 

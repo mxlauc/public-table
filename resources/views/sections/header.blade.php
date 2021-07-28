@@ -20,6 +20,7 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
             <ul class="ms-auto navbar-nav">
                 @auth
+                <guide-component></guide-component>
                 <li class="nav-item dropdown">
                     <notifications-component></notifications-component>
                 </li>
