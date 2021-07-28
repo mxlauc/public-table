@@ -43,16 +43,7 @@ Route::get('users/{id}/posts', function ($id) {
     return PostResource::collection(Post::with('user')->where("user_id", $id)->orderBy('id', 'DESC')->paginate(4));
 });
 
-Route::get('/@{id}', function ($id) {
-    $user = User::where("user_name", $id)->get()->first();
-    if($user){
-        return view('user.show', compact('user'));
-    }else{
-        abort(404);
-    }
-
-
-});
+Route::get('/@{user:user_name}', [UserController::class, 'show']);
 
 Route::post('followers/{user}', function (Request $request, User $user) {
     error_log('Some message here.');

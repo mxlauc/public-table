@@ -45,17 +45,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, User $user)
     {
         if($request->get('notification')){
             $request->user()->notifications->where("id", $request->get('notification'))->markAsRead();
         }
 
         if($request->ajax()){
-            return new UserResource(User::find($id));
+            return new UserResource($user);
         }
 
-        $user = User::find($id);
         return view('user.show', compact('user'));
     }
 
