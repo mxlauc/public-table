@@ -7,6 +7,7 @@
                         :post-id="post.id"
                         :usuario-nombre="post.user.name"
                         :usuario-imagen="post.user.avatar"
+                        :usuario-id="post.user.id"
                         :usuario-url="post.user.url"
                         :imagen="post.imagen"
                         :descripcion="post.descripcion"

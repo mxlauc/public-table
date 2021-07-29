@@ -46,11 +46,11 @@
                             <div class="mb-2">
                                 <label>
                                     <img
-                                        v-bind:src="usuarioLoginImagen"
+                                        v-bind:src="usuarioLogin?.avatar"
                                         class="rounded-circle"
                                         style="height: 40px"
                                     />
-                                    {{ usuarioLoginNombre }}
+                                    {{ usuarioLogin?.nombre }}
                                 </label>
                             </div>
                             <form
@@ -116,7 +116,7 @@
 </template>
 <script>
 export default {
-    inject: ["usuarioLoginImagen", "usuarioLoginNombre"],
+    inject: ["usuarioLogin"],
     data() {
         return {
             imagenPreview: null,

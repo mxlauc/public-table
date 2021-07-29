@@ -21,9 +21,9 @@
 
 
 
-        <div class="row g-0">
+        <div class="row g-0" v-if="usuarioLogin">
             <div class="col col-auto py-2 ps-2">
-                <img v-bind:src="usuarioLoginImagen" class="imagenUsuario" />
+                <img v-bind:src="usuarioLogin?.avatar" class="imagenUsuario" />
             </div>
             <div class="col p-2">
                 <div class="row g-0 contenedorTextarea">
@@ -53,6 +53,7 @@
         </div>
         <!-- Modal Eliminar comentario -->
         <div
+            v-if="usuarioLogin"
             class="modal fade"
             v-bind:id="'eliminarComentarioModal' + postId"
             tabindex="-1"
@@ -123,6 +124,7 @@
         </div>
         <!-- Modal Editar comentario -->
         <div
+            v-if="usuarioLogin"
             class="modal fade"
             v-bind:id="'editarComentarioModal' + postId"
             tabindex="-1"
@@ -203,7 +205,7 @@ export default {
             gifSeleccionado: null
         };
     },
-    inject: ["usuarioLoginImagen", "usuarioLoginNombre", "postId"],
+    inject: ["usuarioLogin", "postId"],
     emits: ["contadorActualizado"],
     mounted() {
         axios({
@@ -219,23 +221,26 @@ export default {
                 console.log(response);
             });
 
-        var thisComponent = this;
-        document
-            .getElementById("eliminarComentarioModal" + this.postId)
-            .addEventListener("show.bs.modal", function (event) {
-                var idComentario = event.relatedTarget.getAttribute(
-                    "data-bs-id-comentario"
-                );
-                thisComponent.buscarComentarioEliminar(idComentario);
-            });
-        document
-            .getElementById("editarComentarioModal" + this.postId)
-            .addEventListener("show.bs.modal", function (event) {
-                var idComentario = event.relatedTarget.getAttribute(
-                    "data-bs-id-comentario"
-                );
-                thisComponent.buscarComentarioEditar(idComentario);
-            });
+        if(this.usuarioLogin){
+            var thisComponent = this;
+            document
+                .getElementById("eliminarComentarioModal" + this.postId)
+                .addEventListener("show.bs.modal", function (event) {
+                    var idComentario = event.relatedTarget.getAttribute(
+                        "data-bs-id-comentario"
+                    );
+                    thisComponent.buscarComentarioEliminar(idComentario);
+                });
+            document
+                .getElementById("editarComentarioModal" + this.postId)
+                .addEventListener("show.bs.modal", function (event) {
+                    var idComentario = event.relatedTarget.getAttribute(
+                        "data-bs-id-comentario"
+                    );
+                    thisComponent.buscarComentarioEditar(idComentario);
+                });
+        }
+
     },
     methods: {
         enviarComentario(e) {
@@ -264,8 +269,9 @@ export default {
                         this.comentarios.push({
                             id: response.data.id,
                             user: {
-                                avatar: this.usuarioLoginImagen,
-                                name: this.usuarioLoginNombre,
+                                id: this.usuarioLogin.id,
+                                avatar: this.usuarioLogin?.avatar,
+                                name: this.usuarioLogin?.nombre,
                             },
                             descripcion: texto,
                             gif_url: this.gifSeleccionado,

@@ -82,10 +82,10 @@
                     class="btn btn-sm btn-outline-light"
                     data-bs-toggle="modal"
                     data-bs-target="#editarNombreUsuarioModal"
-                    v-if="usuarioLoginId == usuarioId">
+                    v-if="usuarioLogin?.id == usuarioId">
                     {{user?.user_name ? 'Editar' : 'Crear un'}} nombre de usuario
                 </button>
-                <div v-else-if="usuarioLoginId">
+                <div v-else-if="usuarioLogin">
                     <button type="button" class="btn btn-sm btn-outline-light" v-if="userData?.following" @click="toggleSeguir">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
@@ -135,7 +135,7 @@ export default {
         }
     },
     props: ["usuarioId"],
-    inject: ["usuarioLoginId"],
+    inject: ["usuarioLogin"],
     mounted(){
         this.cargarUsuario();
         this.consultarSiguiendo();
