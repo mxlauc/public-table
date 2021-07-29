@@ -10,7 +10,7 @@
                     post-id="{{$post->id}}"
                     imagen="{{$post->imagen}}"
                     descripcion="{{$post->descripcion}}"
-                    fecha-creacion="{{$post->created_at}}"
+                    fecha-creacion="{{strtotime($post->created_at)}}"
                     :show-post-page="true">
                 </post-component>
             </div>

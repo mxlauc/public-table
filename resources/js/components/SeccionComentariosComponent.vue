@@ -269,6 +269,7 @@ export default {
                             },
                             descripcion: texto,
                             gif_url: this.gifSeleccionado,
+                            created_at: Math.trunc(Date.now() / 1000)
                         });
                         this.gifSeleccionado = null;
                         this.$emit("contadorActualizado", response.data.count);

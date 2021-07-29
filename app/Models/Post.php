@@ -53,8 +53,4 @@ class Post extends Model
         }
         return $value;
     }
-
-    public function getCreatedAtAttribute($value){
-        return Carbon::create($value)->timestamp;
-    }
 }

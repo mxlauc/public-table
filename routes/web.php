@@ -2,6 +2,7 @@
 
 use App\Events\NewFollower as EventsNewFollower;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\CommentLikeController;
 use App\Http\Controllers\FollowerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
@@ -37,6 +38,7 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::resource('posts', PostController::class)->names("posts")->except(['create', 'edit']);
 Route::resource('posts.likes', PostLikeController::class)->names('posts.likes')->except(['show', 'create', 'edit', 'destroy', 'update']);
+Route::resource('comments.likes', CommentLikeController::class)->names('comments.likes')->except(['show', 'create', 'edit', 'destroy', 'update']);
 Route::get('posts/{post}/likes/{user}', [PostLikeController::class, 'show'])->name('posts.likes.show');
 Route::resource('posts.comments', CommentController::class)->names("comments")->shallow()->except(['show', 'edit', 'create']);
 Route::resource('users', UserController::class)->names("users")->except(["index", "create", "store", "edit", "destroy"]);
