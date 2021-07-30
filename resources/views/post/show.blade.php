@@ -7,6 +7,7 @@
                 <post-component
                     usuario-nombre="{{$post->user->name}}"
                     usuario-imagen="{{$post->user->avatar}}"
+                    usuario-id="{{$post->user->id}}"
                     post-id="{{$post->id}}"
                     imagen="{{$post->imagen}}"
                     descripcion="{{$post->descripcion}}"

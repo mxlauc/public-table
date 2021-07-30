@@ -22,6 +22,10 @@
 <body class="antialiased">
     <div class="container-fluid px-0 pb-5" id="app">
         @include('sections.header')
+        @guest
+            @include('sections.login')
+        @endguest
+
         @yield('content')
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
@@ -51,15 +55,25 @@
                         var mm = fecha.getMinutes();
                         return ` ${d} de ${m} a las ${h}:${mm < 10 ? '0' + mm : mm}`;
                     }
+                },
+                mostrarLoginModal(){
+                    var modal = bootstrap.Modal.getOrCreateInstance(document.querySelector('#loginModal'));
+                    modal.show();
                 }
             }
         };
         var app = Vue.createApp({
             provide(){
                 return {
-                    usuarioLoginImagen: "{{Auth::user()->avatar ?? ''}}",
-                    usuarioLoginNombre: "{{Auth::user()->name ?? ''}}",
-                    usuarioLoginId: "{{Auth::user()->id ?? false}}",
+                    @auth
+                    usuarioLogin: {
+                        id: "{{Auth::user()->id ?? false}}",
+                        nombre: "{{Auth::user()->name ?? ''}}",
+                        avatar: "{{Auth::user()->avatar ?? ''}}"
+                    },
+                    @else
+                    usuarioLogin: null,
+                    @endauth
                 };
             },
         });

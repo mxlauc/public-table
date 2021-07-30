@@ -172,7 +172,7 @@
                         </a
                     >
                 </div>
-                <div class="col col-auto">
+                <div class="col col-auto" v-if="usuarioLogin?.id == usuarioId || !showPostPage">
 
                     <svg xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -184,7 +184,7 @@
                     <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                     </svg>
                     <ul class="dropdown-menu dropdown-menu-end shadow">
-                        <li>
+                        <li v-if="!showPostPage">
                             <a
                                 class="dropdown-item"
                                 type="button"
@@ -196,7 +196,7 @@
                                 Ver publicación
                             </a>
                         </li>
-                        <li>
+                        <li v-if="usuarioLogin?.id == usuarioId">
                             <button class="dropdown-item" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -205,7 +205,7 @@
                                 Editar publicación
                             </button>
                         </li>
-                        <li>
+                        <li v-if="usuarioLogin?.id == usuarioId">
                             <button class="dropdown-item" type="button" data-bs-toggle="modal" v-bind:data-bs-target="'#eliminarPostModal' + postId">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                 <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
@@ -330,6 +330,7 @@ export default {
         "postId",
         "usuarioNombre",
         "usuarioImagen",
+        "usuarioId",
         "imagen",
         "descripcion",
         "showPostPage",
@@ -342,7 +343,7 @@ export default {
         };
     },
     inject: [
-        "usuarioLoginId",
+        "usuarioLogin",
     ],
     mounted() {
         this.calcularTruncamiento();
@@ -409,6 +410,10 @@ export default {
             }
         },
         focusCajaTexto() {
+            if(!this.usuarioLogin){
+                this.mostrarLoginModal();
+                return;
+            }
             console.log("cajaTexto" + this.postId);
             document.querySelector("#cajaTexto" + this.postId).focus();
         },
@@ -426,6 +431,10 @@ export default {
             });
         },
         toggleLike(){
+            if(!this.usuarioLogin){
+                this.mostrarLoginModal();
+                return;
+            }
             console.log("like!" + this.postId);
             axios.post(`/posts/${this.postId}/likes`, {
             })
@@ -438,7 +447,7 @@ export default {
             });
         },
         obtenerMiLike(){
-            axios.get(`/posts/${this.postId}/likes/${this.usuarioLoginId ? this.usuarioLoginId : '0'}`)
+            axios.get(`/posts/${this.postId}/likes/${this.usuarioLogin ? this.usuarioLogin.id : '0'}`)
             .then(response=>{
                 this.likeInfo = response.data;
             })
