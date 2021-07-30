@@ -37,7 +37,7 @@ class PostLikeController extends Controller
         if($like){
             $like->delete();
             //TODO: add type to querys COMMENTS LIKE ETC...
-            DB::table('notifications')->where("data->post", $post->id)->where("data->tipo", "likePost")->where("data->user->id", $request->user()->id)->delete();
+            DB::table('notifications')->where('data->post', $post->id)->where('data->tipo', 'likePost')->where('data->user->id', $request->user()->id)->delete();
         }else{
             $post->likes()->create([
                 "user_id" => $request->user()->id
