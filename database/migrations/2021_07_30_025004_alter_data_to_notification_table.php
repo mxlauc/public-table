@@ -29,7 +29,10 @@ class AlterDataToNotificationTable extends Migration
     public function down()
     {
         Schema::table('notifications', function (Blueprint $table) {
-            $table->text('data')->nullable(false)->default('')->change();
+            $table->dropColumn('data');
+        });
+        Schema::table('notifications', function (Blueprint $table) {
+            $table->text('data');
         });
     }
 }
