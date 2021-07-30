@@ -1,5 +1,5 @@
 <template>
-    <div class="dropdown">
+    <div class="dropdown d-inline-block" role="button">
         <svg xmlns="http://www.w3.org/2000/svg"
             width="30"
             height="30"
