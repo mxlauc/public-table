@@ -69,7 +69,8 @@
                     usuarioLogin: {
                         id: "{{Auth::user()->id ?? false}}",
                         nombre: "{{Auth::user()->name ?? ''}}",
-                        avatar: "{{Auth::user()->avatar ?? ''}}"
+                        avatar: "{{Auth::user()->avatar ?? ''}}",
+                        url: "{{Auth::user()->getUrl() ?? ''}}",
                     },
                     @else
                     usuarioLogin: null,

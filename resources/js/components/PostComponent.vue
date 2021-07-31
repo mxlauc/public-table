@@ -18,14 +18,11 @@
                     ></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row g-0 usuarioItem" v-for="like in likes" v-bind:key="like.id">
-                        <div class="col col-auto py-1 ps-2">
-                            <img v-bind:src="like.user.avatar" class="imagenUsuario" />
-                        </div>
-                        <div class="col ps-2 pt-2 pb-1 fw-bold">
-                            <span style="font-size:16px;">{{like.user.name}}</span>
-                        </div>
-                    </div>
+                    <like-item-component
+                        v-for="like in likes"
+                        v-bind:key="like.id"
+                        :like="like">
+                    </like-item-component>
                 </div>
             </div>
         </div>
@@ -152,7 +149,7 @@
                 <div class="col px-2">
                     <a
                         :href="usuarioUrl"
-                        class="fw-bold m-0 p-0 text-decoration-none text-dark"
+                        class="fw-bold m-0 p-0 text-decoration-none text-dark d-block"
                         :class="{
                             'text-16': showPostPage,
                             'text-12': !showPostPage,
@@ -306,10 +303,12 @@
 
 <script>
 import SeccionComentariosComponent from "./SeccionComentariosComponent.vue";
+import LikeItemComponent from './LikeItemComponent.vue';
 
 export default {
     components: {
         SeccionComentariosComponent,
+        LikeItemComponent,
     },
     data() {
         return {
