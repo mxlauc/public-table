@@ -2,7 +2,7 @@
     <!-- Modal Ver Likes -->
     <div
         class="modal fade"
-        v-bind:id="'likesPost' + postId"
+        v-bind:id="'likesPost' + post?.id"
         tabindex="-1"
         aria-hidden="true"
     >
@@ -30,7 +30,7 @@
     <!-- Modal Eliminar Post -->
     <div
         class="modal fade"
-        v-bind:id="'eliminarPostModal' + postId"
+        v-bind:id="'eliminarPostModal' + post?.id"
         tabindex="-1"
         aria-hidden="true"
     >
@@ -57,8 +57,8 @@
                             <div class="row g-0">
                                 <div class="col col-auto">
                                     <img
-                                        v-if="usuarioImagen"
-                                        v-bind:src="usuarioImagen"
+                                        v-if="post?.user.imagen"
+                                        v-bind:src="post?.user.imagen"
                                         class="rounded-circle"
                                         :class="{
                                             imgGrande: showPostPage,
@@ -74,10 +74,10 @@
                                             'text-12': !showPostPage,
                                         }"
                                     >
-                                        {{ usuarioNombre }}
+                                        {{ post?.user.name }}
                                     </p>
                                     <a
-                                        v-bind:href="'/posts/' + postId"
+                                        v-bind:href="'/posts/' + post?.id"
                                         class="d-block text-muted m-0 p-0"
                                         :class="{
                                             'text-13': showPostPage,
@@ -92,15 +92,15 @@
                                 class="card-text"
                                 :style="{ fontSize: fontSize + 'px' }"
                             >
-                                {{ descripcion }}
+                                {{ post?.descripcion }}
                             </p>
                         </div>
 
                         <div class="text-center">
                             <img
-                                v-bind:src="imagen"
+                                v-bind:src="post?.imagen"
                                 class="img-fluid"
-                                v-if="imagen"
+                                v-if="post?.imagen"
                                 :class="{ maxHeight450: showPostPage }"
                             />
                         </div>
@@ -135,10 +135,10 @@
         <div class="card-body pb-2">
             <div class="row g-0">
                 <div class="col col-auto">
-                    <a :href="usuarioUrl">
+                    <a :href="post?.user.url">
                         <img
-                        v-if="usuarioImagen"
-                        v-bind:src="usuarioImagen"
+                        v-if="post?.user.avatar"
+                        v-bind:src="post?.user.avatar"
                         class="rounded-circle"
                         :class="{
                             imgGrande: showPostPage,
@@ -148,18 +148,18 @@
                 </div>
                 <div class="col px-2">
                     <a
-                        :href="usuarioUrl"
+                        :href="post?.user.url"
                         class="fw-bold m-0 p-0 text-decoration-none text-dark d-block"
                         :class="{
                             'text-16': showPostPage,
                             'text-12': !showPostPage,
                         }"
                     >
-                        {{ usuarioNombre }}
+                        {{ post?.user.name }}
                     </a>
                     <a
                         style="text-decoration:none"
-                        v-bind:href="'/posts/' + postId"
+                        v-bind:href="'/posts/' + post?.id"
                         class="d-block text-muted m-0 p-0"
                         :class="{
                             'text-13': showPostPage,
@@ -169,7 +169,7 @@
                         </a
                     >
                 </div>
-                <div class="col col-auto" v-if="usuarioLogin?.id == usuarioId || !showPostPage">
+                <div class="col col-auto" v-if="usuarioLogin?.id == post?.user.id || !showPostPage">
 
                     <svg xmlns="http://www.w3.org/2000/svg"
                         fill="currentColor"
@@ -185,7 +185,7 @@
                             <a
                                 class="dropdown-item"
                                 type="button"
-                                v-bind:href="'/posts/' + postId"
+                                v-bind:href="'/posts/' + post?.id"
                             >
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right-square" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm5.854 8.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707l-4.096 4.096z"/>
@@ -193,7 +193,7 @@
                                 Ver publicación
                             </a>
                         </li>
-                        <li v-if="usuarioLogin?.id == usuarioId">
+                        <li v-if="usuarioLogin?.id == post?.user.id">
                             <button class="dropdown-item" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -202,8 +202,8 @@
                                 Editar publicación
                             </button>
                         </li>
-                        <li v-if="usuarioLogin?.id == usuarioId">
-                            <button class="dropdown-item" type="button" data-bs-toggle="modal" v-bind:data-bs-target="'#eliminarPostModal' + postId">
+                        <li v-if="usuarioLogin?.id == post?.user.id">
+                            <button class="dropdown-item" type="button" data-bs-toggle="modal" v-bind:data-bs-target="'#eliminarPostModal' + post?.id">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                 <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                                 </svg>
@@ -213,8 +213,8 @@
                     </ul>
                 </div>
             </div>
-            <hr class="my-2" v-if="descripcion">
-            <p class="card-text" :style="{ fontSize: fontSize + 'px' }" style="white-space:pre-wrap;" v-if="descripcion">
+            <hr class="my-2" v-if="post?.descripcion">
+            <p class="card-text" :style="{ fontSize: fontSize + 'px' }" style="white-space:pre-wrap;" v-if="post?.descripcion">
                 {{mostrarDescripcion}}
                 <span class="fw-bold" role="button" @click="isTextoTruncado=false" v-if="truncarTexto && isTextoTruncado">(Ver más)</span>
                 <span class="fw-bold" role="button" @click="isTextoTruncado=true" v-if="truncarTexto && !isTextoTruncado">(Ver menos)</span>
@@ -223,15 +223,15 @@
 
         <div class="text-center">
             <img
-                v-bind:src="imagen"
+                v-bind:src="post?.imagen"
                 class="img-fluid"
-                v-if="imagen"
+                v-if="post?.imagen"
                 :class="{ maxHeight450: showPostPage }"
             />
         </div>
-        <div class="row g-0 mx-2 text-muted my-2" style="font-size:14px" v-show="likeInfo.count || cantidadComentariosDisplay">
-            <div class="col" data-bs-toggle="modal" v-bind:data-bs-target="'#likesPost' + postId" role="button" >
-                <span v-if="likeInfo.count">
+        <div class="row g-0 mx-2 text-muted my-2" style="font-size:14px" v-show="contador || cantidadComentariosDisplay">
+            <div class="col" data-bs-toggle="modal" v-bind:data-bs-target="'#likesPost' + post?.id" role="button" >
+                <span v-if="contador">
                     <svg xmlns="http://www.w3.org/2000/svg"
                     width="15"
                     height="12"
@@ -240,7 +240,7 @@
                     viewBox="0 0 16 16">
                         <path d="M8.864.046C7.908-.193 7.02.53 6.956 1.466c-.072 1.051-.23 2.016-.428 2.59-.125.36-.479 1.013-1.04 1.639-.557.623-1.282 1.178-2.131 1.41C2.685 7.288 2 7.87 2 8.72v4.001c0 .845.682 1.464 1.448 1.545 1.07.114 1.564.415 2.068.723l.048.03c.272.165.578.348.97.484.397.136.861.217 1.466.217h3.5c.937 0 1.599-.477 1.934-1.064a1.86 1.86 0 0 0 .254-.912c0-.152-.023-.312-.077-.464.201-.263.38-.578.488-.901.11-.33.172-.762.004-1.149.069-.13.12-.269.159-.403.077-.27.113-.568.113-.857 0-.288-.036-.585-.113-.856a2.144 2.144 0 0 0-.138-.362 1.9 1.9 0 0 0 .234-1.734c-.206-.592-.682-1.1-1.2-1.272-.847-.282-1.803-.276-2.516-.211a9.84 9.84 0 0 0-.443.05 9.365 9.365 0 0 0-.062-4.509A1.38 1.38 0 0 0 9.125.111L8.864.046zM11.5 14.721H8c-.51 0-.863-.069-1.14-.164-.281-.097-.506-.228-.776-.393l-.04-.024c-.555-.339-1.198-.731-2.49-.868-.333-.036-.554-.29-.554-.55V8.72c0-.254.226-.543.62-.65 1.095-.3 1.977-.996 2.614-1.708.635-.71 1.064-1.475 1.238-1.978.243-.7.407-1.768.482-2.85.025-.362.36-.594.667-.518l.262.066c.16.04.258.143.288.255a8.34 8.34 0 0 1-.145 4.725.5.5 0 0 0 .595.644l.003-.001.014-.003.058-.014a8.908 8.908 0 0 1 1.036-.157c.663-.06 1.457-.054 2.11.164.175.058.45.3.57.65.107.308.087.67-.266 1.022l-.353.353.353.354c.043.043.105.141.154.315.048.167.075.37.075.581 0 .212-.027.414-.075.582-.05.174-.111.272-.154.315l-.353.353.353.354c.047.047.109.177.005.488a2.224 2.224 0 0 1-.505.805l-.353.353.353.354c.006.005.041.05.041.17a.866.866 0 0 1-.121.416c-.165.288-.503.56-1.066.56z"/>
                     </svg>
-                    {{likeInfo.count}} Personas
+                    {{contador}} Personas
                 </span>
             </div>
             <div class="col col-auto text-end">
@@ -262,9 +262,9 @@
             role="button"
             style="user-select: none;font-size:14px;"
         >
-            <div class="col text-center py-2" v-wave @click="toggleLike" :class="{like: likeInfo.miLike}">
+            <div class="col text-center py-2" v-wave @click="toggleLike" :class="{like: my_like}">
                 <svg xmlns="http://www.w3.org/2000/svg"
-                v-if="likeInfo.miLike"
+                v-if="my_like"
                 width="25"
                 height="20"
                 preserveAspectRatio="none"
@@ -312,11 +312,9 @@ export default {
     },
     data() {
         return {
+            my_like: this.post?.my_like ?? false,
+            contador: this.post?.contador ?? 0,
             fontSize: 14,
-            likeInfo:{
-                miLike: false,
-                count:0
-            },
             likes: [],
             fechaCreacionDisplay: '',
             cantidadComentariosDisplay: 0,
@@ -326,19 +324,12 @@ export default {
         };
     },
     props: [
-        "postId",
-        "usuarioNombre",
-        "usuarioImagen",
-        "usuarioId",
-        "imagen",
-        "descripcion",
         "showPostPage",
-        "fechaCreacion",
-        "usuarioUrl",
+        "post",
     ],
     provide(){
         return {
-            postId : this.postId
+            postId : this.post?.id
         };
     },
     inject: [
@@ -359,8 +350,8 @@ export default {
             }).observe(this.$refs.card);
         }
         //calcular nuevo tamaño del texto de la publicacion
-        if (!this.imagen && this.descripcion) {
-            var l = this.descripcion.length;
+        if (!this.post?.imagen && this.post?.descripcion) {
+            var l = this.post?.descripcion.length;
             if (l < 100) {
                 this.fontSize = 26;
             } else if (l < 200) {
@@ -370,9 +361,8 @@ export default {
             }
         }
 
-        this.obtenerMiLike();
         var thisComponent = this;
-        var myModalEl = document.getElementById('likesPost' + this.postId)
+        var myModalEl = document.getElementById('likesPost' + this.post?.id)
         myModalEl.addEventListener('shown.bs.modal', function (event) {
             thisComponent.obtenerLikes();
         });
@@ -381,23 +371,23 @@ export default {
     },
     computed: {
         mostrarDescripcion(){
-            return (this.truncarTexto && this.isTextoTruncado) ? this.textoTruncado : this.descripcion;
+            return (this.truncarTexto && this.isTextoTruncado) ? this.textoTruncado : this.post?.descripcion;
         }
     },
     methods: {
         calcularTruncamiento(){
-            if(!this.descripcion){
+            if(!this.post?.descripcion){
                 return;
             }
             let tamanoLineas = 40;
             let maxLineas = 5;
             let contadorLineas = 0;
             let index = 0;
-            let lineas = this.descripcion.split("\n");
+            let lineas = this.post?.descripcion.split("\n");
             for(let i = 0 ; i< lineas.length ; i++){
                 let partLineas = Math.ceil(lineas[i].length / tamanoLineas);
                 if(contadorLineas + partLineas > maxLineas){
-                    this.textoTruncado = this.descripcion.substring(0, index + ((maxLineas - contadorLineas) * tamanoLineas)).trim() + "...";
+                    this.textoTruncado = this.post?.descripcion.substring(0, index + ((maxLineas - contadorLineas) * tamanoLineas)).trim() + "...";
                     this.truncarTexto = true;
                     return;
                 }
@@ -413,12 +403,12 @@ export default {
                 this.mostrarLoginModal();
                 return;
             }
-            console.log("cajaTexto" + this.postId);
-            document.querySelector("#cajaTexto" + this.postId).focus();
+            console.log("cajaTexto" + this.post?.id);
+            document.querySelector("#cajaTexto" + this.post?.id).focus();
         },
         eliminarPublicacion(){
 
-            axios.post("/posts/" + this.postId, {
+            axios.post("/posts/" + this.post?.id, {
                 _method: "DELETE"
             })
             .then(response=>{
@@ -434,28 +424,20 @@ export default {
                 this.mostrarLoginModal();
                 return;
             }
-            console.log("like!" + this.postId);
-            axios.post(`/posts/${this.postId}/likes`, {
+            console.log("like!" + this.post?.id);
+            axios.post(`/posts/${this.post?.id}/likes`, {
             })
             .then(response=>{
-                this.likeInfo = response.data;
+                this.my_like = response.data.miLike;
+                this.contador = response.data.count;
                 console.log(response.data);
             })
             .catch(response=>{
                 console.log(response.data);
             });
         },
-        obtenerMiLike(){
-            axios.get(`/posts/${this.postId}/likes/${this.usuarioLogin ? this.usuarioLogin.id : '0'}`)
-            .then(response=>{
-                this.likeInfo = response.data;
-            })
-            .catch(response=>{
-                console.log(response.data);
-            })
-        },
         obtenerLikes(){
-            axios.get(`/posts/${this.postId}/likes`)
+            axios.get(`/posts/${this.post?.id}/likes`)
             .then(response=>{
                 console.log(response.data);
                 this.likes = response.data.data;
@@ -465,7 +447,7 @@ export default {
             });
         },
         establecerFechaCreacionDisplay(){
-            this.fechaCreacionDisplay = this.timeAgo(this.fechaCreacion);
+            this.fechaCreacionDisplay = this.timeAgo(this.post?.created_at);
         },
         actualizarContador(count){
             this.cantidadComentariosDisplay = count;

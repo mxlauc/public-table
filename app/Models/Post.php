@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
@@ -52,5 +53,13 @@ class Post extends Model
             return Storage::url($value);
         }
         return $value;
+    }
+
+    public function contador(){
+        return $this->likes->count();
+    }
+
+    public function myLike(){
+        return $this->likes->where("user_id", Auth::user()->id)->isEmpty() ? 0 : 1;
     }
 }
