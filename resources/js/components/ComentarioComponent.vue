@@ -2,13 +2,15 @@
     <div>
         <div class="row g-0">
             <div class="col col-auto py-1 ps-2">
-                <img v-bind:src="comentario.user.avatar" class="imagenUsuario" />
+                <a :href="comentario.user.url">
+                    <img v-bind:src="comentario.user.avatar" class="imagenUsuario" />
+                </a>
             </div>
             <div class="col col-auto ps-2 pt-1" style="max-width: 70%">
                 <span class="textarea text-break" style="font-size: 12px">
-                    <label class="fw-bold">
+                    <a :href="comentario.user.url" class="fw-bold text-dark text-decoration-none">
                         {{ comentario.user.name }}
-                    </label>
+                    </a>
                     <p class="m-0">
                         {{ comentario.descripcion }}
                     </p>

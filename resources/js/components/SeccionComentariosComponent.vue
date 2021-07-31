@@ -287,6 +287,7 @@ export default {
                                 id: this.usuarioLogin.id,
                                 avatar: this.usuarioLogin?.avatar,
                                 name: this.usuarioLogin?.nombre,
+                                url: this.usuarioLogin?.url,
                             },
                             descripcion: texto,
                             gif_url: this.gifSeleccionado,
