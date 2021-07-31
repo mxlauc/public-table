@@ -5,6 +5,15 @@
   */
 
 /*!
+ *  Lang.js for Laravel localization in JavaScript.
+ *
+ *  @version 1.1.12
+ *  @license MIT https://github.com/rmariuzzo/Lang.js/blob/master/LICENSE
+ *  @site    https://github.com/rmariuzzo/Lang.js
+ *  @author  Rubens Mariuzzo <rubens@mariuzzo.com>
+ */
+
+/*!
  * Masonry v4.2.2
  * Cascading grid layout library
  * https://masonry.desandro.com
