@@ -12,7 +12,6 @@
                 </div>
             </div>
         </template>
-        <template #carganido>Cargando...</template>
     </v-simple-infinite-scroll>
 
 </template>

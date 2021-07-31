@@ -9,7 +9,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#crearPublicacionModal"
                 >
-                    Publicar algo...
+                    {{__('Post something')}}...
                 </label>
             </div>
         </div>
@@ -33,7 +33,7 @@
                     style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1)"
                 >
                     <div class="modal-header">
-                        <h5 class="modal-title">Crear publicación</h5>
+                        <h5 class="modal-title">{{__('Create post')}}</h5>
                         <button
                             type="button"
                             class="btn-close"
@@ -68,7 +68,7 @@
                                         border: 0px;
                                         outline: none;
                                     "
-                                    placeholder="¿En qué estas pensando?"
+                                    :placeholder="__('What are you thinking about?')"
                                 ></textarea>
                                 <input
                                     type="file"
@@ -96,7 +96,7 @@
                                     src="https://img.icons8.com/cotton/2x/image-file-add--v2.png"
                                     style="height: 20px"
                                 />
-                                Agregar imagen
+                                {{__('Add image')}}
                             </label>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                             class="btn btn-primary w-100 mt-2"
                             @click="enviarFormulario"
                         >
-                            Publicar
+                            {{__('Publish')}}
                         </button>
                     </div>
                 </div>

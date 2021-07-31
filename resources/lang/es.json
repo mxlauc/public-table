@@ -3,5 +3,74 @@
     "English" : "Inglés",
     "Login" : "Iniciar sesión",
     "My profile" : "Mi perfil",
-    "Logout" : "Cerrar sesión"
+    "Logout" : "Cerrar sesión",
+    "Like" : "Me gusta",
+    "Comment" : "Comentar",
+    "Previous comments" : "Ver comentarios anteriores",
+    "Post something" : "Publicar algo",
+    "Create post" : "Crear publicación",
+    "What are you thinking about?" : "¿En qué estas pensando?",
+    "Add image" : "Agregar imagen",
+    "Publish" : "Publicar",
+    "Edit comment" : "Editar comentario",
+    "Delete comment" : "Eliminar comentario",
+    "Are you sure you want to delete this comment?" : "¿Seguro que quieres eliminar este comentario?",
+    "Delete" : "Eliminar",
+    "Cancel" : "Cancelar",
+    "Save" : "Guardar",
+    "Search" : "Buscar",
+    "Notifications" : "Notificaciones",
+    "See post" : "Ver publicación",
+    "Edit post" : "Editar publicación",
+    "Delete post" : "Eliminar publicación",
+    "Are you sure you want to delete this post?" : "¿Seguro quieres eliminar esta publicación?",
+    "These people liked your post" : "A estas personas les gusto tu publicación",
+    "Edit name of user" : "Editar nombre de usuario",
+    "Write a name of user" : "Escriba un nombre de usuario",
+    "Create a name of user" : "Crear nombre de usuario",
+    "Follow" : "Seguir",
+    "Following" : "Siguiendo",
+    "Followers": "Seguidores",
+    "Publications" : "Publicaciones",
+
+    "A moment ago" : "Hace un momento",
+    "A minute ago" : "Hace un minuto",
+    "minutes ago" : "Hace :minutes minutos",
+    "A hour ago" : "Hace una hora",
+    "hours ago" : "Hace :hours horas",
+    "A day ago" : "Hace un día",
+    "days ago" : "Hace :days días",
+
+    "date" : ":day de :month del :year a las :hours::minutes",
+
+    "January" : "Enero",
+    "February" : "Febrero",
+    "March" : "Marzo",
+    "April" : "Abril",
+    "May" : "Mayo",
+    "June" : "Junio",
+    "July" : "Julio",
+    "August" : "Agosto",
+    "September" : "Septiembre",
+    "October" : "Octubre",
+    "November" : "Noviembre",
+    "December" : "Diciembre",
+
+    "person" : "persona",
+    "people" : "personas",
+    "comment" : "comentario",
+    "comments" : "comentarios",
+
+    "Mark as read" : "Marcar como leída",
+    "Mark as unread" : "Marcar como no leída",
+
+
+    "has comment your publication" : "<span class='fw-bold'>:name</span> a comentado tu publicación.",
+    "has created a publication" : "<span class='fw-bold'>:name</span> a subido una nueva publicación.",
+    "has liked your publication" : "A <span class='fw-bold'>:name</span> le ha gustado tu publicación.",
+    "has followed you" : "A <span class='fw-bold'>:name</span> ha comenzado a seguirte."
+
+
+
+
 }

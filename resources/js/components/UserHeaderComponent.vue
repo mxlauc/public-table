@@ -9,7 +9,7 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Editar nombre de usuario</h5>
+                        <h5 class="modal-title">{{__('Edit name of user')}}</h5>
                         <button
                             type="button"
                             class="btn-close"
@@ -19,7 +19,7 @@
                     </div>
                     <div class="modal-body">
                         <p>
-                            Escriba un nombre de usuario
+                            {{__('Write a name of user')}}
                         </p>
                         <div class="contenedorInput">
                             <form action="" method="POST" ref="formUserName" @submit.prevent="actualizarNombreUsuario">
@@ -36,7 +36,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
-                            Cancelar
+                            {{__('Cancel')}}
                         </button>
                         <button
                             type="button"
@@ -45,7 +45,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
                             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                             </svg>
-                            Guardar
+                            {{__('Save')}}
                         </button>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                     data-bs-toggle="modal"
                     data-bs-target="#editarNombreUsuarioModal"
                     v-if="usuarioLogin?.id == usuarioId">
-                    {{user?.user_name ? 'Editar' : 'Crear un'}} nombre de usuario
+                    {{user?.user_name ? __('Edit name of user') : __('Create a name of user')}}
                 </button>
                 <div v-else-if="usuarioLogin">
                     <button type="button" class="btn btn-sm btn-outline-light" v-if="userData?.following" @click="toggleSeguir">
@@ -91,14 +91,14 @@
                             <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
                             <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                         </svg>
-                        Seguiendo
+                        {{__('Following')}}
                     </button>
                     <button type="button" class="btn btn-sm btn-outline-light" v-else @click="toggleSeguir">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                         <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
                         </svg>
-                        Seguir
+                        {{__('Follow')}}
                     </button>
                 </div>
 
@@ -109,15 +109,15 @@
                     <div class="row gx-5">
                         <div class="col col-12 col-sm-4" style="min-width: 33%">
                             <h3>{{userData?.posts}}</h3>
-                            <h6>publicaciones</h6>
+                            <h6>{{__('Publications')}}</h6>
                         </div>
                         <div class="col col-6 col-sm-4" style="min-width: 33%">
                             <h3>{{userData?.followers}}</h3>
-                            <h6>Seguidores</h6>
+                            <h6>{{__('Followers')}}</h6>
                         </div>
                         <div class="col col-6 col-sm-4" style="min-width: 33%">
                             <h3>{{userData?.followeds}}</h3>
-                            <h6>Seguidos</h6>
+                            <h6>{{__('Following')}}</h6>
                         </div>
                     </div>
                 </div>

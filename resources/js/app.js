@@ -9,6 +9,7 @@ window.SeccionPosts =               require('./components/SeccionPosts.vue').def
 window.UserHeaderComponent =        require('./components/UserHeaderComponent.vue').default;
 window.NotificationsComponent =     require('./components/NotificationsComponent.vue').default;
 window.GuideComponent =             require('./components/GuideComponent.vue').default;
+window.Lang = require('laravel-vue-lang').default;
 
 window.VWave = require('v-wave').default;
 
