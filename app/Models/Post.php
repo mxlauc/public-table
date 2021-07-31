@@ -60,6 +60,9 @@ class Post extends Model
     }
 
     public function myLike(){
+        if(!Auth::user()){
+            return 0;
+        }
         return $this->likes->where("user_id", Auth::user()->id)->isEmpty() ? 0 : 1;
     }
 }
