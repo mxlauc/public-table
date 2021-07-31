@@ -64,9 +64,8 @@ class PostController extends Controller
             $request->user()->notifications->where("id", $request->get('notification'))->markAsRead();
         }
 
-        $postModel = Post::with('user')->findOrFail($id);
-        $this->authorize($postModel);
-        $post = new PostResource($postModel);
+        $post = Post::with('user')->findOrFail($id);
+        $this->authorize($post);
         return view('post.show', compact('post'));
     }
 

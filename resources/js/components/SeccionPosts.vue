@@ -4,14 +4,7 @@
             <div class="row masonry-row justify-content-center">
                 <div class="col" :class="[classItem]"  v-for="post in posts" v-bind:key="post.id">
                     <post-component
-                        :post-id="post.id"
-                        :usuario-nombre="post.user.name"
-                        :usuario-imagen="post.user.avatar"
-                        :usuario-id="post.user.id"
-                        :usuario-url="post.user.url"
-                        :imagen="post.imagen"
-                        :descripcion="post.descripcion"
-                        :fecha-creacion="post.created_at"
+                        :post="post"
                         :show-post-page="false">
                     </post-component>
                 </div>
