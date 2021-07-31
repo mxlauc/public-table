@@ -30,19 +30,29 @@
                         {{ strtok(Auth::user()->name, ' ') }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                      <li><a class="dropdown-item" href="{{Auth::user()->getUrl()}}">Mi perfil</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="{{Auth::user()->getUrl()}}">{{__('My profile')}}</a></li>
                       <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="{{ route('social.auth.logout') }}">Cerrar sesión</a>
+                      <li><a class="dropdown-item" href="{{ route('social.auth.logout') }}">{{__('Logout')}}</a>
                       </li>
                     </ul>
                   </li>
                 @else
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ route('social.auth') }}">Iniciar
-                            Sesión</a>
+                        <a class="nav-link active" aria-current="page" href="{{ route('social.auth') }}">
+                            {{__('Login')}}
+                        </a>
                     </li>
                 @endauth
+                <li class="nav-item dropdown">
+                    <a class="nav-link active dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ app()->getLocale() == 'en' ? 'English' : 'Español' }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                        <li><a class="dropdown-item" href="{{route('locale', 'en')}}">{{__('English')}}</a></li>
+                        <li><a class="dropdown-item" href="{{route('locale', 'es')}}">{{__('Spanish')}}</a></li>
+                      </li>
+                    </ul>
+                  </li>
             </ul>
         </div>
     </div>
