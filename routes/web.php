@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,3 +66,8 @@ Route::resource('notificaciones', NotificationController::class)->names('notific
 Route::get('login/google', [LoginController::class, 'redirectToProvider'])->name('social.auth');
 Route::get('logout', [LoginController::class, 'logout'])->name('social.auth.logout');
 Route::get('login/google/callback', [LoginController::class, 'handleProviderCallback'])->name('social.callback');
+
+Route::get('setLocale/{locale}', function ($language) {
+    Session::put('locale', $language === 'es' ? 'es' : 'en');
+    return redirect()->back();
+})->name('locale');

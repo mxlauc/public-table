@@ -26,15 +26,16 @@ class NotificationResource extends JsonResource
     }
 
     private function getDescripcion(){
+
         switch($this->type){
             case 'App\Notifications\NewComment':
-                return "<span class='fw-bold'>" . $this->data['user']['nombre'] ."</span>" . " a comentado tu publicación.";
+                return __("has comment your publication", ["name" => $this->data['user']['nombre']]);
             case 'App\Notifications\NewPostFollowed':
-                return "<span class='fw-bold'>" . $this->data['user']['nombre'] ."</span>" . " a subido una nueva publicación.";
+                return __("has created a publication", ["name" => $this->data['user']['nombre']]);
             case 'App\Notifications\NewLike':
-                return "A <span class='fw-bold'>" . $this->data['user']['nombre'] ."</span>" . " le ha gustado tu publicación.";
+                return __("has liked your publication", ["name" => $this->data['user']['nombre']]);
             case 'App\Notifications\NewFollower':
-                return "A <span class='fw-bold'>" . $this->data['user']['nombre'] ."</span>" . " ha comenzado a seguirte.";
+                return __("has followed you", ["name" => $this->data['user']['nombre']]);
         }
     }
 

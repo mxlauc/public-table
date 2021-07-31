@@ -13,7 +13,7 @@
         <div class="dropdown-menu dropdown-menu-end transparent">
             <div class="contenedorGifs">
                 <div class="contenedorInput">
-                    <input type="text" placeholder="Buscar" @keyup="escribir" ref="input">
+                    <input type="text" :placeholder="__('Search')" @keyup="escribir" ref="input">
                 </div>
                 <div style="height: 344px; overflow: auto">
                     <div class="row g-0" :id="['masonry-gifs-row' + postId]">

@@ -24,8 +24,8 @@
                 </svg>
             </div>
             <ul class="dropdown-menu dropdown-menu-end shadow">
-                <li class="dropdown-item" role="button" @click="toggleReadAt">Marcar como {{visto ? 'no' : ''}} leída</li>
-                <li class="dropdown-item" role="button" @click="eliminarNotificacion">Eliminar</li>
+                <li class="dropdown-item" role="button" @click="toggleReadAt">{{visto ? __('Mark as unread') : __('Mark as read')}}</li>
+                <li class="dropdown-item" role="button" @click="eliminarNotificacion">{{__('Delete')}}</li>
             </ul>
         </div>
     </div>
