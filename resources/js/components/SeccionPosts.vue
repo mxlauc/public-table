@@ -5,7 +5,8 @@
                 <div class="col" :class="[classItem]"  v-for="post in posts" v-bind:key="post.id">
                     <post-component
                         :post="post"
-                        :show-post-page="false">
+                        :show-post-page="false"
+                        @post-deleted="postDeleted">
                     </post-component>
                 </div>
                 <div class="v-simple-infinite-scroll-bottom col" :class="[classItem]">
@@ -57,6 +58,12 @@ export default {
                 });
             }
         },
+        postDeleted(id){
+            var indice = this.posts.findIndex(
+                (post) => post.id == id
+            );
+            this.posts.splice(indice, 1);
+        }
     }
 }
 </script>

@@ -401,6 +401,7 @@ export default {
     inject: [
         "usuarioLogin",
     ],
+    emits : ["postDeleted"],
     mounted() {
         this.calcularTruncamiento();
 
@@ -479,7 +480,14 @@ export default {
             })
             .then(response=>{
                 console.log(response.data);
-                location.replace("/");
+                if(this.showPostPage){
+                    location.replace("/");
+                }else{
+                    var myModal = window.bootstrap.Modal.getInstance(document.getElementById('eliminarPostModal' + this.post.id));
+                    myModal.hide();
+                    this.$emit("postDeleted", this.post.id);
+                }
+
             })
             .catch(response=>{
                 console.log(response);
