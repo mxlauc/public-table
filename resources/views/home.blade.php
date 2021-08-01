@@ -3,15 +3,6 @@
 @section('style')
 @endsection
 
-@section('script')
-    <script>
-        app.component('crear-publicacion-component', CrearPublicacionComponent);
-        app.component('seccion-posts-component', SeccionPosts);
-        app.component('notifications-component', NotificationsComponent);
-        app.component('guide-component', GuideComponent);
-    </script>
-@endsection
-
 @section('content')
     <div class="container pt-5">
         @auth

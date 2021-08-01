@@ -91,6 +91,13 @@
     </script>
     @yield('script')
     <script>
+        app.component('post-component', PostComponent);
+        app.component('notifications-component', NotificationsComponent);
+        app.component('user-header-component', UserHeaderComponent);
+        app.component('crear-publicacion-component', CrearPublicacionComponent);
+        app.component('seccion-posts-component', SeccionPosts);
+        app.component('guide-component', GuideComponent);
+
         app.use(Lang);
         app.use(window.VWave);
         app.mount("#app");

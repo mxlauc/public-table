@@ -6,7 +6,7 @@
         <div
             class="modal-content shadow-lg">
             <div class="modal-header">
-                <h5 class="modal-title">Acción necesaria</h5>
+                <h5 class="modal-title">{{__('Required action')}}</h5>
                 <button
                     type="button"
                     class="btn-close"
@@ -15,11 +15,11 @@
             </div>
             <div class="modal-body text-center">
                 <p>
-                    Para continuar necesitas iniciar sesión
+                    {{__('To continue you need to log in')}}
                 </p>
                 <a href="{{route('social.auth')}}"
                     class="btn btn-primary mb-5">
-                    Iniciar sesión
+                    {{__('Login')}}
                 </a>
             </div>
         </div>
