@@ -68,6 +68,8 @@
                                         border: 0px;
                                         outline: none;
                                     "
+                                    ref="textarea"
+                                    @keyup="keyup"
                                     :placeholder="__('What are you thinking about?')"
                                 ></textarea>
                                 <input
@@ -75,15 +77,22 @@
                                     name="imagen"
                                     id="imagen"
                                     class="d-none"
+                                    accept="image/png, image/jpeg"
                                     @change="mostrarPreview"
                                 />
                             </form>
 
-                            <img
+                            <div class="position-relative" v-if="imagenPreview">
+                                <img
                                 v-bind:src="imagenPreview"
-                                class="w-100"
-                                v-if="imagenPreview"
-                            />
+                                class="w-100 rounded-3">
+                                <button
+                                    type="button"
+                                    class="btn-close bg-white shadow position-absolute top-0 end-0 m-3 p-2 rounded-circle"
+                                    aria-label="Close"
+                                    @click="borrarImagen">
+                                </button>
+                            </div>
 
                             <label
                                 for="imagen"
@@ -104,6 +113,7 @@
                         <button
                             type="button"
                             class="btn btn-primary w-100 mt-2"
+                            :disabled="disableButton"
                             @click="enviarFormulario"
                         >
                             {{__('Publish')}}
@@ -120,52 +130,49 @@ export default {
     data() {
         return {
             imagenPreview: null,
+            textareaLength: 0,
         };
     },
+    computed:{
+        disableButton(){
+            return !this.imagenPreview && !this.textareaLength;
+        }
+    },
     methods: {
+        keyup(e){
+            this.textareaLength = this.$refs.textarea.value.trim().length;
+        },
         enviarFormulario(e) {
             e.preventDefault();
 
             var formData = new FormData(this.$refs.formCrear);
-
-            /* AJAX request */
-            axios({
-                method: "post",
-                url: "/posts",
-
-                data: formData,
-
-                config: {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
+            axios.post('/posts', formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
                 },
             })
-                /* handle success */
-                .then((response) => {
-                    this.ocultarModal();
-                })
-
-                /* handle error */
-                .catch((error) => {
-                    let indices = Object.keys(error.response.data.errors);
-                    if(indices.length > 0){
-                        alert(error.response.data.errors[indices[0]]);
-                    }
-                });
+            .then((response) => {
+                this.ocultarModal();
+            })
+            .catch((error) => {
+                let indices = Object.keys(error.response.data.errors);
+                if(indices.length > 0){
+                    alert(error.response.data.errors[indices[0]]);
+                }
+            });
         },
         ocultarModal() {
-            var modalHTML = document.getElementById("crearPublicacionModal");
-            var myModal = window.bootstrap.Modal.getInstance(modalHTML);
-            let formulario = this.$refs.formCrear;
-            modalHTML.addEventListener("hidden.bs.modal", function (event) {
-                this.imagenPreview = null;
-                formulario.reset();
-            });
+            var myModal = window.bootstrap.Modal.getInstance(document.getElementById("crearPublicacionModal"));
             myModal.hide();
+            this.imagenPreview = null;
+            this.$refs.formCrear.reset();
         },
         mostrarPreview(e) {
             this.imagenPreview = URL.createObjectURL(e.target.files[0]);
+        },
+        borrarImagen(){
+            this.$refs.formCrear.imagen.value = ''
+            this.imagenPreview = null;
         },
     },
 };
