@@ -69,6 +69,20 @@ class PostController extends Controller
         return view('post.show', compact('post'));
     }
 
+        /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $post = Post::find($id);
+        $post->update($request->all());
+        return response()->json("ok");
+    }
+
     /**
      * Remove the specified resource from storage.
      *
