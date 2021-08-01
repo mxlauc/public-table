@@ -41,7 +41,7 @@
                         </gif-picker-component>
                         <svg
                         @click="enviarComentario"
-                        class="me-1 text-primary"
+                        class="pe-1"
                         fill="currentColor"
                         role="button"
                         width="26px"
