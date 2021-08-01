@@ -32,10 +32,6 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $this->authorize(Post::class);
-        if(!$request->user()){
-            return; //no hay usuario
-        }
-
         $imagen = null;
         if($request->file('imagen')){
             $imagen = $request->file('imagen')->store('public/imagenes');
@@ -49,7 +45,7 @@ class PostController extends Controller
 
         NewPostFollowed::dispatch($request->user(), $post);
 
-        return response()->json('ok');
+        return new PostResource(Post::with('user')->find($post->id));
     }
 
     /**

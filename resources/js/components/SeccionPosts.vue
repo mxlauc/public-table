@@ -1,4 +1,9 @@
 <template>
+    <crear-publicacion-component
+        v-if="showCreatePostComponent"
+        @post-created="postCreated">
+    </crear-publicacion-component>
+
     <v-simple-infinite-scroll @load="cargarMasPosts" :distance="0">
         <template #default>
             <div class="row masonry-row justify-content-center">
@@ -19,10 +24,13 @@
 <script>
 import VSimpleInfiniteScroll from 'v-simple-infinite-scroll';
 import PostComponent from './PostComponent.vue';
+import CrearPublicacionComponent from './CrearPublicacionComponent';
+
 export default {
     components: {
         VSimpleInfiniteScroll,
         PostComponent,
+        CrearPublicacionComponent,
     },
     data(){
         return {
@@ -43,6 +51,11 @@ export default {
     mounted(){
 
     },
+    computed:{
+        showCreatePostComponent(){
+            return window.location.pathname == '/';
+        }
+    },
     methods: {
         cargarMasPosts(scroller){
             let url = this.postsPaginador ? this.postsPaginador.next : this.url;
@@ -58,12 +71,16 @@ export default {
                 });
             }
         },
+        postCreated(post){
+            this.posts.unshift(post);
+            console.log(post);
+        },
         postDeleted(id){
             var indice = this.posts.findIndex(
                 (post) => post.id == id
             );
             this.posts.splice(indice, 1);
-        }
+        },
     }
 }
 </script>

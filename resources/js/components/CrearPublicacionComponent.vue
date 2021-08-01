@@ -138,6 +138,7 @@ export default {
             return !this.imagenPreview && !this.textareaLength;
         }
     },
+    emits: ["postCreated"],
     methods: {
         keyup(e){
             this.textareaLength = this.$refs.textarea.value.trim().length;
@@ -152,6 +153,8 @@ export default {
                 },
             })
             .then((response) => {
+                console.log(response.data.data);
+                this.$emit("postCreated", response.data.data);
                 this.ocultarModal();
             })
             .catch((error) => {
