@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\NewComment;
 use App\Http\Requests\StoreCommentRequest;
+use App\Http\Resources\CommentCollection;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Post;
@@ -23,11 +24,8 @@ class CommentController extends Controller
     public function index(Request $request, $id)
     {
         $this->authorize(Comment::class);
-        if(!$request->page){
-            $comments = Comment::with('user')->where('post_id', $id)->paginate(3);
-            return redirect($comments->url($comments->lastPage()));
-        }
-        return CommentResource::collection(Comment::with('user')->where('post_id', $id)->paginate(3));
+        return new CommentCollection(Comment::with('user')->where('post_id', $id)->orderBy('id', 'desc')->cursorPaginate(3));
+
     }
 
     /**

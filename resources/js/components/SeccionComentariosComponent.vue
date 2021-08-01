@@ -1,7 +1,7 @@
 <template>
     <div>
         <a
-            v-if="comentariosPaginador && comentariosPaginador.prev"
+            v-if="comentariosPaginador && comentariosPaginador.next"
             class="text-muted fw-bold ms-2"
             style="font-size: 12px; text-decoration:none"
             role="button"
@@ -12,7 +12,7 @@
         <div >
             <transition-group name="grupo-comentarios">
                 <comentario-component
-                    v-for="comentario in comentarios"
+                    v-for="comentario in comentarios.slice().reverse()"
                     :key="comentario.id"
                     :comentario="comentario">
                 </comentario-component>
@@ -285,7 +285,7 @@ export default {
                     .then((response) => {
                         this.$refs.textarea.innerHTML = "";
 
-                        this.comentarios.push({
+                        this.comentarios.unshift({
                             id: response.data.id,
                             user: {
                                 id: this.usuarioLogin.id,
@@ -312,13 +312,11 @@ export default {
         cargarMasComentarios() {
             axios({
                 method: "get",
-                url: this.comentariosPaginador.prev,
+                url: this.comentariosPaginador.next,
             })
                 .then((response) => {
                     this.comentariosPaginador = response.data.links;
-                    this.comentarios = response.data.data.concat(
-                        this.comentarios
-                    );
+                    this.comentarios = this.comentarios.concat(response.data.data);
                 })
                 .catch((response) => {
                     console.log(response);

@@ -19,7 +19,7 @@ class PostLikeController extends Controller
     public function index($postId)
     {
         $this->authorize(Like::class);
-        return LikeResource::collection(Post::find($postId)->likes()->with('user')->orderBy('id', 'DESC')->paginate(2));
+        return LikeResource::collection(Post::find($postId)->likes()->with('user')->orderBy('id', 'DESC')->cursorPaginate(2));
     }
 
     /**

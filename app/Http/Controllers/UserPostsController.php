@@ -9,6 +9,6 @@ use Illuminate\Http\Request;
 class UserPostsController extends Controller
 {
     public function posts($id){
-        return PostResource::collection(Post::with('user')->where("user_id", $id)->orderBy('id', 'DESC')->paginate(4));
+        return PostResource::collection(Post::with('user')->where("user_id", $id)->orderBy('id', 'DESC')->cursorPaginate(4));
     }
 }

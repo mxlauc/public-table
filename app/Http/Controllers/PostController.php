@@ -20,7 +20,7 @@ class PostController extends Controller
     public function index()
     {
         $this->authorize(Post::class);
-        return PostResource::collection(Post::with('user')->orderBy('id', 'DESC')->paginate(4));
+        return PostResource::collection(Post::with('user')->orderBy('id', 'DESC')->cursorPaginate(4));
     }
 
     /**
