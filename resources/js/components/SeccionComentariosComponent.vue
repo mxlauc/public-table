@@ -267,7 +267,11 @@ export default {
                         .replaceAll("<br>", "\n")
                         .replaceAll("<div>", "\n<div>"),
                     "text/html"
-                ).documentElement.textContent;
+                ).documentElement.textContent.trim();
+
+            if(!texto && !this.gifSeleccionado){
+                return;
+            }
 
                 /* AJAX request */
                 axios({
