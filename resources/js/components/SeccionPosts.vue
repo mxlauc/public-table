@@ -11,7 +11,8 @@
                     <post-component
                         :post="post"
                         :show-post-page="false"
-                        @post-deleted="postDeleted">
+                        @post-deleted="postDeleted"
+                        @size-changed="sizeChanged">
                     </post-component>
                 </div>
                 <div class="v-simple-infinite-scroll-bottom col" :class="[classItem]">
@@ -35,7 +36,8 @@ export default {
     data(){
         return {
             posts: [],
-            postsPaginador: null
+            postsPaginador: null,
+            masonry : null,
         };
     },
     props:{
@@ -46,10 +48,7 @@ export default {
         url : {
             type : String,
             default : '/posts',
-        }
-    },
-    mounted(){
-
+        },
     },
     computed:{
         showCreatePostComponent(){
@@ -73,13 +72,18 @@ export default {
         },
         postCreated(post){
             this.posts.unshift(post);
-            console.log(post);
+            this.sizeChanged();
         },
         postDeleted(id){
             var indice = this.posts.findIndex(
                 (post) => post.id == id
             );
             this.posts.splice(indice, 1);
+        },
+        sizeChanged(){
+            this.masonry?.destroy();
+            delete this.masonry;
+            this.masonry = new Masonry(".masonry-row", {});
         },
     }
 }

@@ -401,7 +401,7 @@ export default {
     inject: [
         "usuarioLogin",
     ],
-    emits : ["postDeleted"],
+    emits : ["postDeleted", "sizeChanged"],
     mounted() {
         this.calcularTruncamiento();
 
@@ -410,10 +410,8 @@ export default {
             thisComponent.$refs.card.classList.add("cardPostVisible");
         }, Math.random() * 600);
         if (!this.showPostPage) {
-            new ResizeObserver(function () {
-                var msnry = new Masonry(".masonry-row", {
-                    percentPosition: true,
-                });
+            new ResizeObserver(() => {
+                this.$emit("sizeChanged");
             }).observe(this.$refs.card);
         }
         //calcular nuevo tamaño del texto de la publicacion
