@@ -92,7 +92,12 @@ class PostController extends Controller
         $post = Post::find($id);
         $this->authorize($post);
         if($post->imagen){
-            Storage::delete($post->imagen);
+            if(env('FILESYSTEM_DRIVER') == 's3'){
+                Storage::disk('s3')->delete($post->imagen);
+            }else{
+                unlink(public_path() . '/' . $post->imagen);
+            }
+
         }
         $post->delete();
 
