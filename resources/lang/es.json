@@ -88,7 +88,15 @@
 
     "Previous" : "Anterior",
     "Next" : "Siguiente",
-    "Close" : "Cerrar"
+    "Close" : "Cerrar",
+
+    "Wow!" : "¡Vaya!",
+    "This page could not be found" : "No ha sido posible encontrar esta página",
+    "This may be because the owner removed the content or the address is incorrect" : "Esto puede deberse a que el propietario elimino el contenido o la dirección es incorrecta",
+    "Go to homepage" : "Ir a la página de inicio",
+    "Join Public Table" : "Unete a Public Table",
+    "Share content with other users. Create an account today." : "Comparte contenido con otros usuarios. Crea una cuenta hoy.",
+    "Designed by" : "Diseñado por"
 
 
 }
