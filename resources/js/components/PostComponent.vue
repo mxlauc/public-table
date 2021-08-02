@@ -295,8 +295,8 @@
             />
         </div>
         <div class="row g-0 mx-2 text-muted my-2" style="font-size:14px" v-show="contador || cantidadComentariosDisplay">
-            <div class="col" data-bs-toggle="modal" v-bind:data-bs-target="'#likesPost' + post?.id" role="button" >
-                <span v-if="contador">
+            <div class="col">
+                <span data-bs-toggle="modal" v-bind:data-bs-target="'#likesPost' + post?.id" role="button" v-if="contador">
                     <svg xmlns="http://www.w3.org/2000/svg"
                     width="15"
                     height="12"
