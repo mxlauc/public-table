@@ -17,12 +17,11 @@
                         aria-label="Close"
                     ></button>
                 </div>
-                <div class="modal-body">
-                    <like-item-component
-                        v-for="like in likes"
-                        v-bind:key="like.id"
-                        :like="like">
-                    </like-item-component>
+                <div class="modal-body v-simple-infinite-scroll-container">
+                    <likes-component
+                        v-if="showLikes"
+                        :url="'/posts/' + post?.id + '/likes'">
+                    </likes-component>
                 </div>
             </div>
         </div>
@@ -295,8 +294,8 @@
             />
         </div>
         <div class="row g-0 mx-2 text-muted my-2" style="font-size:14px" v-show="contador || cantidadComentariosDisplay">
-            <div class="col" data-bs-toggle="modal" v-bind:data-bs-target="'#likesPost' + post?.id" role="button" >
-                <span v-if="contador">
+            <div class="col">
+                <span data-bs-toggle="modal" v-bind:data-bs-target="'#likesPost' + post?.id" role="button" v-if="contador">
                     <svg xmlns="http://www.w3.org/2000/svg"
                     width="15"
                     height="12"
@@ -327,7 +326,7 @@
             role="button"
             style="user-select: none;font-size:14px;"
         >
-            <div class="col text-center py-2" v-wave @click="toggleLike" :class="{like: my_like}">
+            <div class="col text-center py-2 guide-3" v-wave @click="toggleLike" :class="{like: my_like}">
                 <svg xmlns="http://www.w3.org/2000/svg"
                 v-if="my_like"
                 width="25"
@@ -359,7 +358,6 @@
                 {{__('Comment')}}
             </div>
         </div>
-        <hr class="my-0" />
         <seccion-comentarios-component
             @contador-actualizado="actualizarContador"
         ></seccion-comentarios-component>
@@ -368,12 +366,12 @@
 
 <script>
 import SeccionComentariosComponent from "./SeccionComentariosComponent.vue";
-import LikeItemComponent from './LikeItemComponent.vue';
+import LikesComponent from './LikesComponent.vue';
 
 export default {
     components: {
         SeccionComentariosComponent,
-        LikeItemComponent,
+        LikesComponent,
     },
     data() {
         return {
@@ -387,6 +385,7 @@ export default {
             isTextoTruncado: true,
             truncarTexto: false,
             descripcionEditar: this.post.descripcion,
+            showLikes: false,
         };
     },
     props: [
@@ -428,8 +427,8 @@ export default {
 
         var thisComponent = this;
         var myModalEl = document.getElementById('likesPost' + this.post?.id)
-        myModalEl.addEventListener('shown.bs.modal', function (event) {
-            thisComponent.obtenerLikes();
+        myModalEl.addEventListener('shown.bs.modal', () => {
+            this.showLikes = true;
         });
         this.establecerFechaCreacionDisplay();
 
@@ -503,16 +502,6 @@ export default {
                 this.my_like = response.data.miLike;
                 this.contador = response.data.count;
                 console.log(response.data);
-            })
-            .catch(response=>{
-                console.log(response.data);
-            });
-        },
-        obtenerLikes(){
-            axios.get(`/posts/${this.post?.id}/likes`)
-            .then(response=>{
-                console.log(response.data);
-                this.likes = response.data.data;
             })
             .catch(response=>{
                 console.log(response.data);

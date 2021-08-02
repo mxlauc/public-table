@@ -69,8 +69,8 @@
         </div>
         <div class="mb-1 text-muted" style="padding-left: 50px; font-size:12px;">
             <span class="fw-bold" role="button" @click="like" :class="{'text-primary': miLike}" v-if="usuarioLogin">{{__('Like')}}</span>
-            <span v-if="usuarioLogin && contador"> · </span>
-            <span class="fw-bold" v-if="contador">{{contador}}</span>
+            <span v-if="usuarioLogin && contador"> ·</span>
+            <span class="fw-bold px-1" v-if="contador" data-bs-toggle="modal" v-bind:data-bs-target="'#likesComment' + comentario?.id" role="button"> {{contador}} </span>
             <svg xmlns="http://www.w3.org/2000/svg"
                 v-if="!usuarioLogin && contador"
                 class="ms-1"
@@ -85,15 +85,51 @@
             <span class="ms-3" v-if="usuarioLogin || contador"></span>
             <span>{{timeAgo(comentario.created_at)}}</span>
         </div>
+        <!-- Modal Ver Likes -->
+    <div
+        class="modal fade"
+        v-bind:id="'likesComment' + comentario?.id"
+        tabindex="-1"
+        aria-hidden="true"
+    >
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{__('These people liked this comment')}}</h5>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div class="modal-body v-simple-infinite-scroll-container">
+                    <likes-component
+                        v-if="showLikes"
+                        :url="'/comments/' + comentario?.id + '/likes'">
+                    </likes-component>
+
+                </div>
+            </div>
+        </div>
     </div>
+    </div>
+
 </template>
 
 <script>
+
+import LikesComponent from './LikesComponent.vue';
+
 export default {
+    components : {
+        LikesComponent,
+    },
     data(){
         return {
             miLike : false,
             contador : 0,
+            showLikes: false,
         };
     },
     props: ["comentario"],
@@ -101,6 +137,11 @@ export default {
     mounted(){
         this.miLike = this.comentario.myLike;
         this.contador = this.comentario.contador;
+
+        var myModalEl = document.getElementById('likesComment' + this.comentario?.id)
+        myModalEl.addEventListener('shown.bs.modal', () => {
+            this.showLikes = true;
+        });
     },
     methods:{
         like(){
@@ -112,7 +153,7 @@ export default {
             .catch(response=>{
                 console.log(response.data);
             });
-        }
+        },
     },
 };
 </script>

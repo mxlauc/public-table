@@ -36,15 +36,19 @@ class NotificationResource extends JsonResource
                 return __("has liked your publication", ["name" => $this->data['user']['nombre']]);
             case 'App\Notifications\NewFollower':
                 return __("has followed you", ["name" => $this->data['user']['nombre']]);
+            case 'App\Notifications\NewCommentLike':
+                return __("has liked your comment", ["name" => $this->data['user']['nombre']]);
         }
     }
 
     private function getUrl(){
         switch($this->type){
             case 'App\Notifications\NewComment':
-                return route('posts.show', ["post" => $this->data['post'], "notification" => $this->id]);
+
+            case 'App\Notifications\NewCommentLike':
+
             case 'App\Notifications\NewPostFollowed':
-                return route('posts.show', ["post" => $this->data['post'], "notification" => $this->id]);
+
             case 'App\Notifications\NewLike':
                 return route('posts.show', ["post" => $this->data['post'], "notification" => $this->id]);
             case 'App\Notifications\NewFollower':

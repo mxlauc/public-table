@@ -1,6 +1,6 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark" style="background-color: rgb(0, 162, 255)">
     <div class="container">
-        <a class="navbar-brand" href="/" >
+        <a class="navbar-brand guide-1" href="/" >
             <svg xmlns="http://www.w3.org/2000/svg"
                 width="26"
                 height="26"
@@ -21,10 +21,10 @@
             <ul class="ms-auto navbar-nav">
                 @auth
                 <guide-component></guide-component>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown guide-6">
                     <notifications-component></notifications-component>
                 </li>
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown guide-5">
                     <a class="nav-link active dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <img class="rounded" src="{{ Auth::user()->avatar }}" width="22" height="22">
                         {{ strtok(Auth::user()->name, ' ') }}
@@ -43,7 +43,7 @@
                         </a>
                     </li>
                 @endauth
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown guide-2">
                     <a class="nav-link active dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         {{ app()->getLocale() == 'en' ? 'English' : 'Español' }}
                     </a>

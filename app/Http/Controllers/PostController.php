@@ -7,6 +7,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Comment;
 use App\Models\Post;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -44,8 +45,9 @@ class PostController extends Controller
             "imagen" => $imagen,
             "user_id" => $request->user()->id,
         ]);
-
-        NewPostFollowed::dispatch($request->user(), $post);
+        if($post->user_id != $request->user()->id){
+            NewPostFollowed::dispatch($request->user(), $post);
+        }
 
         return new PostResource(Post::with('user')->find($post->id));
     }
@@ -95,13 +97,21 @@ class PostController extends Controller
             if(env('FILESYSTEM_DRIVER') == 's3'){
                 Storage::disk('s3')->delete($post->imagen);
             }else{
-                unlink(public_path() . '/' . $post->imagen);
+                try {
+                    unlink(public_path() . $post->imagen);
+                } catch (Exception $e) {
+                    error_log($e->getMessage());
+                }
+
             }
 
         }
         $post->delete();
 
         DB::table('notifications')->where('data->post', $id)->where('data->tipo', 'newPostFollowed')->where('data->user->id', Auth::user()->id)->delete();
+        DB::table('notifications')->where('data->post', $id)->where('data->tipo', 'commentPost')->where('data->user->id', Auth::user()->id)->delete();
+        DB::table('notifications')->where('data->post', $id)->where('data->tipo', 'likePost')->where('data->user->id', Auth::user()->id)->delete();
+        DB::table('notifications')->where('data->post', $id)->where('data->tipo', 'likeComment')->where('data->user->id', Auth::user()->id)->delete();
 
         if($request->ajax()){
             return response()->json('ok');
