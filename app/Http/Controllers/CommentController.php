@@ -51,7 +51,9 @@ class CommentController extends Controller
             "gif_url" => $request->gif_url,
         ]);
 
-        NewComment::dispatch($post, $request->user(), $comment);
+        if($post->user_id != $request->user()->id){
+            NewComment::dispatch($post, $request->user(), $comment);
+        }
 
         return response()->json([
             "id" => $comment->id,

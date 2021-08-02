@@ -45,8 +45,9 @@ class PostController extends Controller
             "imagen" => $imagen,
             "user_id" => $request->user()->id,
         ]);
-
-        NewPostFollowed::dispatch($request->user(), $post);
+        if($post->user_id != $request->user()->id){
+            NewPostFollowed::dispatch($request->user(), $post);
+        }
 
         return new PostResource(Post::with('user')->find($post->id));
     }

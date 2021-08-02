@@ -43,7 +43,9 @@ class PostLikeController extends Controller
                 "user_id" => $request->user()->id
             ]);
             $miLike = true;
-            NewLike::dispatch($post, $request->user());
+            if($post->user_id != $request->user()->id){
+                NewLike::dispatch($post, $request->user());
+            }
         }
         return response()->json([
             "miLike" => $miLike,
