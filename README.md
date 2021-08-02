@@ -42,6 +42,8 @@ Puede verse la aplicación en producción en **[Public-table.herokuapp.com](http
 ## Modelo de base de datos
 <img src="dbimage.png">
 
+- **likes:** Tiene una relación polimórfica con comments y posts (Un comentario puede tener likes. Un post puede tener likes).
+- **user_user:** Es una tabla pivot para una relación de muchos a muchos entre usuarios (Para seguidores y seguidos).
 
 ## Autor
 
