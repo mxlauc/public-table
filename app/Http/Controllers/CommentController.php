@@ -11,6 +11,8 @@ use App\Models\Post;
 
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use SebastianBergmann\Environment\Console;
 
 
@@ -86,6 +88,9 @@ class CommentController extends Controller
         $this->authorize($comment);
         $postId = $comment->post_id;
         $comment->delete();
+
+        DB::table('notifications')->where('data->post', $postId)->where('data->tipo', 'commentPost')->where('data->user->id', Auth::user()->id)->delete();
+
         return response()->json([
             "count" => Post::find($postId)->comments()->count()
         ]);

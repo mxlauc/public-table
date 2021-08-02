@@ -8,6 +8,8 @@ use App\Http\Resources\PostResource;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -90,7 +92,9 @@ class PostController extends Controller
         $post = Post::find($id);
         $this->authorize($post);
         $post->delete();
-        //return redirect()
+
+        DB::table('notifications')->where('data->post', $id)->where('data->tipo', 'newPostFollowed')->where('data->user->id', Auth::user()->id)->delete();
+
         if($request->ajax()){
             return response()->json('ok');
         }
