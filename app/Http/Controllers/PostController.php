@@ -91,6 +91,9 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $this->authorize($post);
+        if($post->imagen){
+            Storage::delete($post->imagen);
+        }
         $post->delete();
 
         DB::table('notifications')->where('data->post', $id)->where('data->tipo', 'newPostFollowed')->where('data->user->id', Auth::user()->id)->delete();
