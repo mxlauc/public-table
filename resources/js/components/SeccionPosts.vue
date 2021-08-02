@@ -50,9 +50,12 @@ export default {
             default : '/posts',
         },
     },
+    inject: [
+        "usuarioLogin",
+    ],
     computed:{
         showCreatePostComponent(){
-            return window.location.pathname == '/';
+            return this.usuarioLogin && window.location.pathname == '/';
         }
     },
     methods: {
