@@ -1,12 +1,12 @@
 <template>
     <div>
+        <hr class="my-0" v-if="comentarios?.length">
         <a
             v-if="comentariosPaginador && comentariosPaginador.next"
             class="text-muted fw-bold ms-2"
             style="font-size: 12px; text-decoration:none"
             role="button"
-            @click="cargarMasComentarios"
-        >
+            @click="cargarMasComentarios">
             {{__('Previous comments')}}
         </a>
         <div >

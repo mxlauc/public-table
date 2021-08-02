@@ -358,7 +358,6 @@
                 {{__('Comment')}}
             </div>
         </div>
-        <hr class="my-0" />
         <seccion-comentarios-component
             @contador-actualizado="actualizarContador"
         ></seccion-comentarios-component>
