@@ -15,7 +15,7 @@ class NotificationController extends Controller
      */
     public function index(Request $request)
     {
-        return new NotificationCollection($request->user()->notifications()->paginate(10));
+        return new NotificationCollection($request->user()->notifications()->cursorPaginate(10));
     }
 
     /**

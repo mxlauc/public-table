@@ -8,6 +8,8 @@ use App\Http\Resources\PostResource;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
@@ -20,7 +22,7 @@ class PostController extends Controller
     public function index()
     {
         $this->authorize(Post::class);
-        return PostResource::collection(Post::with('user')->orderBy('id', 'DESC')->paginate(4));
+        return PostResource::collection(Post::with('user')->orderBy('id', 'DESC')->cursorPaginate(4));
     }
 
     /**
@@ -32,10 +34,6 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $this->authorize(Post::class);
-        if(!$request->user()){
-            return; //no hay usuario
-        }
-
         $imagen = null;
         if($request->file('imagen')){
             $imagen = $request->file('imagen')->store('public/imagenes');
@@ -49,7 +47,7 @@ class PostController extends Controller
 
         NewPostFollowed::dispatch($request->user(), $post);
 
-        return response()->json('ok');
+        return new PostResource(Post::with('user')->find($post->id));
     }
 
     /**
@@ -69,6 +67,20 @@ class PostController extends Controller
         return view('post.show', compact('post'));
     }
 
+        /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $post = Post::find($id);
+        $post->update($request->all());
+        return response()->json("ok");
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -79,8 +91,13 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $this->authorize($post);
+        if($post->imagen){
+            Storage::delete($post->imagen);
+        }
         $post->delete();
-        //return redirect()
+
+        DB::table('notifications')->where('data->post', $id)->where('data->tipo', 'newPostFollowed')->where('data->user->id', Auth::user()->id)->delete();
+
         if($request->ajax()){
             return response()->json('ok');
         }

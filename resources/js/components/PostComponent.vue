@@ -9,7 +9,7 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{__('These people liked your post')}}</h5>
+                    <h5 class="modal-title">{{__('These people liked this post')}}</h5>
                     <button
                         type="button"
                         class="btn-close"
@@ -27,6 +27,74 @@
             </div>
         </div>
     </div>
+    <!-- Editar publicacion Modal -->
+        <div
+            class="modal fade"
+            v-bind:id="'editarPublicacionModal' + post?.id"
+            tabindex="-1"
+            data-bs-backdrop="static"
+            data-bs-keyboard="false"
+            aria-hidden="true"
+        >
+            <div
+                class="
+                    modal-dialog modal-dialog-centered modal-dialog-scrollable
+                "
+            >
+                <div
+                    class="modal-content"
+                    style="box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1)"
+                >
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{__('Edit post')}}</h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="mb-2">
+                                <label>
+                                    <img
+                                        v-bind:src="usuarioLogin?.avatar"
+                                        class="rounded-circle"
+                                        style="height: 40px"
+                                    />
+                                    {{ usuarioLogin?.nombre }}
+                                </label>
+                            </div>
+                            <textarea
+                                name="descripcion"
+                                style="
+                                    width: 100%;
+                                    height: 100px;
+                                    resize: none;
+                                    border: 0px;
+                                    outline: none;
+                                "
+                                ref="textarea"
+                                @keyup="keyup"
+                                v-model="descripcionEditar"
+                                :placeholder="__('What are you thinking about?')"
+                            ></textarea>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-primary w-100 mt-2"
+                            :disabled="!post?.imagen && !descripcionEditar.trim()"
+                            @click="editarPost">
+                            {{__('Save')}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     <!-- Modal Eliminar Post -->
     <div
         class="modal fade"
@@ -57,8 +125,7 @@
                             <div class="row g-0">
                                 <div class="col col-auto">
                                     <img
-                                        v-if="post?.user.imagen"
-                                        v-bind:src="post?.user.imagen"
+                                        v-bind:src="post?.user.avatar"
                                         class="rounded-circle"
                                         :class="{
                                             imgGrande: showPostPage,
@@ -76,15 +143,13 @@
                                     >
                                         {{ post?.user.name }}
                                     </p>
-                                    <a
-                                        v-bind:href="'/posts/' + post?.id"
-                                        class="d-block text-muted m-0 p-0"
+                                    <span
+                                        class="d-block text-muted m-0 p-0 text-decoration-none"
                                         :class="{
                                             'text-13': showPostPage,
                                             'text-10': !showPostPage,
                                         }"
-                                        >Hace 12 horas</a
-                                    >
+                                        >{{timeAgo(post.created_at)}}</span>
                                 </div>
                             </div>
                             <hr class="my-2" />
@@ -194,7 +259,7 @@
                             </a>
                         </li>
                         <li v-if="usuarioLogin?.id == post?.user.id">
-                            <button class="dropdown-item" type="button">
+                            <button class="dropdown-item" type="button" data-bs-toggle="modal" v-bind:data-bs-target="'#editarPublicacionModal' + post?.id">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -321,6 +386,7 @@ export default {
             textoTruncado: '',
             isTextoTruncado: true,
             truncarTexto: false,
+            descripcionEditar: this.post.descripcion,
         };
     },
     props: [
@@ -335,6 +401,7 @@ export default {
     inject: [
         "usuarioLogin",
     ],
+    emits : ["postDeleted", "sizeChanged"],
     mounted() {
         this.calcularTruncamiento();
 
@@ -343,10 +410,8 @@ export default {
             thisComponent.$refs.card.classList.add("cardPostVisible");
         }, Math.random() * 600);
         if (!this.showPostPage) {
-            new ResizeObserver(function () {
-                var msnry = new Masonry(".masonry-row", {
-                    percentPosition: true,
-                });
+            new ResizeObserver(() => {
+                this.$emit("sizeChanged");
             }).observe(this.$refs.card);
         }
         //calcular nuevo tamaño del texto de la publicacion
@@ -413,7 +478,14 @@ export default {
             })
             .then(response=>{
                 console.log(response.data);
-                location.replace("/");
+                if(this.showPostPage){
+                    location.replace("/");
+                }else{
+                    var myModal = window.bootstrap.Modal.getInstance(document.getElementById('eliminarPostModal' + this.post.id));
+                    myModal.hide();
+                    this.$emit("postDeleted", this.post.id);
+                }
+
             })
             .catch(response=>{
                 console.log(response);
@@ -451,6 +523,21 @@ export default {
         },
         actualizarContador(count){
             this.cantidadComentariosDisplay = count;
+        },
+        editarPost(){
+            console.log("editando post");
+            axios.put('/posts/' + this.post.id,{
+                descripcion: this.descripcionEditar.trim()
+            })
+            .then(response => {
+                this.post.descripcion = this.descripcionEditar.trim();
+                var myModal = window.bootstrap.Modal.getInstance(document.getElementById('editarPublicacionModal' + this.post?.id));
+                myModal.hide();
+            })
+            .catch(response =>{
+                console.log(response);
+            });
+
         }
     },
 };

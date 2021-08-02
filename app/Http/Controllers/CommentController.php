@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Events\NewComment;
 use App\Http\Requests\StoreCommentRequest;
+use App\Http\Resources\CommentCollection;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Post;
 
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use SebastianBergmann\Environment\Console;
 
 
@@ -23,11 +26,8 @@ class CommentController extends Controller
     public function index(Request $request, $id)
     {
         $this->authorize(Comment::class);
-        if(!$request->page){
-            $comments = Comment::with('user')->where('post_id', $id)->paginate(3);
-            return redirect($comments->url($comments->lastPage()));
-        }
-        return CommentResource::collection(Comment::with('user')->where('post_id', $id)->paginate(3));
+        return new CommentCollection(Comment::with('user')->where('post_id', $id)->orderBy('id', 'desc')->cursorPaginate(3));
+
     }
 
     /**
@@ -88,6 +88,9 @@ class CommentController extends Controller
         $this->authorize($comment);
         $postId = $comment->post_id;
         $comment->delete();
+
+        DB::table('notifications')->where('data->post', $postId)->where('data->tipo', 'commentPost')->where('data->user->id', Auth::user()->id)->delete();
+
         return response()->json([
             "count" => Post::find($postId)->comments()->count()
         ]);

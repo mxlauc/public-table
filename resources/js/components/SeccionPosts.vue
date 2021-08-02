@@ -1,11 +1,18 @@
 <template>
+    <crear-publicacion-component
+        v-if="showCreatePostComponent"
+        @post-created="postCreated">
+    </crear-publicacion-component>
+
     <v-simple-infinite-scroll @load="cargarMasPosts" :distance="0">
         <template #default>
             <div class="row masonry-row justify-content-center">
                 <div class="col" :class="[classItem]"  v-for="post in posts" v-bind:key="post.id">
                     <post-component
                         :post="post"
-                        :show-post-page="false">
+                        :show-post-page="false"
+                        @post-deleted="postDeleted"
+                        @size-changed="sizeChanged">
                     </post-component>
                 </div>
                 <div class="v-simple-infinite-scroll-bottom col" :class="[classItem]">
@@ -18,15 +25,19 @@
 <script>
 import VSimpleInfiniteScroll from 'v-simple-infinite-scroll';
 import PostComponent from './PostComponent.vue';
+import CrearPublicacionComponent from './CrearPublicacionComponent';
+
 export default {
     components: {
         VSimpleInfiniteScroll,
         PostComponent,
+        CrearPublicacionComponent,
     },
     data(){
         return {
             posts: [],
-            postsPaginador: null
+            postsPaginador: null,
+            masonry : null,
         };
     },
     props:{
@@ -37,10 +48,15 @@ export default {
         url : {
             type : String,
             default : '/posts',
-        }
+        },
     },
-    mounted(){
-
+    inject: [
+        "usuarioLogin",
+    ],
+    computed:{
+        showCreatePostComponent(){
+            return this.usuarioLogin && window.location.pathname == '/';
+        }
     },
     methods: {
         cargarMasPosts(scroller){
@@ -56,6 +72,21 @@ export default {
                     console.log(response.data);
                 });
             }
+        },
+        postCreated(post){
+            this.posts.unshift(post);
+            this.sizeChanged();
+        },
+        postDeleted(id){
+            var indice = this.posts.findIndex(
+                (post) => post.id == id
+            );
+            this.posts.splice(indice, 1);
+        },
+        sizeChanged(){
+            this.masonry?.destroy();
+            delete this.masonry;
+            this.masonry = new Masonry(".masonry-row", {});
         },
     }
 }

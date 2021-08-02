@@ -27,10 +27,3 @@
     </div>
 
 @endsection
-
-@section('script')
-    <script>
-        app.component('post-component', PostComponent);
-        app.component('notifications-component', NotificationsComponent);
-    </script>
-@endsection

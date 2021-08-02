@@ -14,8 +14,9 @@
         </div>
 
     </a>
-    <div class="dropdown-menu dropdown-menu-end v-simple-infinite-scroll-container shadow-lg" style="
+    <div class="dropdown-menu dropdown-menu-end v-simple-infinite-scroll-container shadow-lg pb-5" style="
         min-width:400px;
+        min-height:400px;
         max-height:80vh;
         overflow-y:auto;
         overflow-x:hidden;">

@@ -20,10 +20,3 @@
     </div>
 </div>
 @endsection
-
-@section('script')
-    <script>
-        app.component('user-header-component', UserHeaderComponent);
-        app.component('seccion-posts-component', SeccionPosts);
-    </script>
-@endsection
