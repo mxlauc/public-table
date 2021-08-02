@@ -6,6 +6,7 @@
 
     "has comment your publication" : "<span class='fw-bold'>:name</span> has commented on your post.",
     "has created a publication" : "<span class='fw-bold'>:name</span> has a new publication.",
-    "has liked your publication" : "A <span class='fw-bold'>:name</span> liked your post.",
-    "has followed you" : "A <span class='fw-bold'>:name</span> has started to follow you."
+    "has liked your publication" : "<span class='fw-bold'>:name</span> liked your post.",
+    "has followed you" : "<span class='fw-bold'>:name</span> has started to follow you.",
+    "has liked your comment" : "<span class='fw-bold'>:name</span> liked your comment."
 }

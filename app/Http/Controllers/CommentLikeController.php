@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewCommentLike;
+use App\Http\Resources\LikeResource;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CommentLikeController extends Controller
 {
@@ -12,9 +15,10 @@ class CommentLikeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($commentId)
     {
-        //
+        $this->authorize(Like::class);
+        return LikeResource::collection(Comment::find($commentId)->likes()->with('user')->orderBy('id', 'DESC')->cursorPaginate(15));
     }
 
     /**
@@ -32,13 +36,15 @@ class CommentLikeController extends Controller
         if($like){
             $like->delete();
             //TODO: add type to querys COMMENTS LIKE ETC...
-            //DB::table('notifications')->where("data->post", $comment->id)->where("data->tipo", "likePost")->where("data->user->id", $request->user()->id)->delete();
+            DB::table('notifications')->where("data->post", $comment->id)->where("data->tipo", "likeComment")->where("data->user->id", $request->user()->id)->delete();
         }else{
             $comment->likes()->create([
                 "user_id" => $request->user()->id
             ]);
             $miLike = true;
-            //NewLike::dispatch($comment, $request->user());
+            if($comment->user_id != $request->user()->id){
+                NewCommentLike::dispatch($comment->post, $request->user());
+            }
         }
         return response()->json([
             "miLike" => $miLike,

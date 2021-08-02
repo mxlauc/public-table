@@ -17,12 +17,11 @@
                         aria-label="Close"
                     ></button>
                 </div>
-                <div class="modal-body">
-                    <like-item-component
-                        v-for="like in likes"
-                        v-bind:key="like.id"
-                        :like="like">
-                    </like-item-component>
+                <div class="modal-body v-simple-infinite-scroll-container">
+                    <likes-component
+                        v-if="showLikes"
+                        :url="'/posts/' + post?.id + '/likes'">
+                    </likes-component>
                 </div>
             </div>
         </div>
@@ -368,12 +367,12 @@
 
 <script>
 import SeccionComentariosComponent from "./SeccionComentariosComponent.vue";
-import LikeItemComponent from './LikeItemComponent.vue';
+import LikesComponent from './LikesComponent.vue';
 
 export default {
     components: {
         SeccionComentariosComponent,
-        LikeItemComponent,
+        LikesComponent,
     },
     data() {
         return {
@@ -387,6 +386,7 @@ export default {
             isTextoTruncado: true,
             truncarTexto: false,
             descripcionEditar: this.post.descripcion,
+            showLikes: false,
         };
     },
     props: [
@@ -428,8 +428,8 @@ export default {
 
         var thisComponent = this;
         var myModalEl = document.getElementById('likesPost' + this.post?.id)
-        myModalEl.addEventListener('shown.bs.modal', function (event) {
-            thisComponent.obtenerLikes();
+        myModalEl.addEventListener('shown.bs.modal', () => {
+            this.showLikes = true;
         });
         this.establecerFechaCreacionDisplay();
 
@@ -503,16 +503,6 @@ export default {
                 this.my_like = response.data.miLike;
                 this.contador = response.data.count;
                 console.log(response.data);
-            })
-            .catch(response=>{
-                console.log(response.data);
-            });
-        },
-        obtenerLikes(){
-            axios.get(`/posts/${this.post?.id}/likes`)
-            .then(response=>{
-                console.log(response.data);
-                this.likes = response.data.data;
             })
             .catch(response=>{
                 console.log(response.data);

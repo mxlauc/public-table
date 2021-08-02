@@ -6,6 +6,8 @@ use App\Events\NewFollower;
 use App\Listeners\SendNewFollowerNotification;
 use App\Events\NewLike;
 use App\Listeners\SendNewLikeNotification;
+use App\Events\NewCommentLike;
+use App\Listeners\SendNewCommentLikeNotification;
 use App\Events\NewComment;
 use App\Listeners\SendNewCommentNotification;
 use App\Events\NewPostFollowed;
@@ -32,6 +34,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         NewLike::class => [
             SendNewLikeNotification::class,
+        ],
+        NewCommentLike::class => [
+            SendNewCommentLikeNotification::class,
         ],
         NewComment::class => [
             SendNewCommentNotification::class,

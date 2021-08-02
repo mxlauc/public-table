@@ -25,6 +25,7 @@
     "Delete post" : "Eliminar publicación",
     "Are you sure you want to delete this post?" : "¿Seguro quieres eliminar esta publicación?",
     "These people liked this post" : "A estas personas les gustó esta publicación",
+    "These people liked this comment" : "A estas personas les gustó este comentario",
     "Edit name of user" : "Editar nombre de usuario",
     "Write a name of user" : "Escriba un nombre de usuario",
     "Create a name of user" : "Crear nombre de usuario",
@@ -69,6 +70,7 @@
     "has created a publication" : "<span class='fw-bold'>:name</span> a subido una nueva publicación.",
     "has liked your publication" : "A <span class='fw-bold'>:name</span> le ha gustado tu publicación.",
     "has followed you" : "A <span class='fw-bold'>:name</span> ha comenzado a seguirte.",
+    "has liked your comment" : "A <span class='fw-bold'>:name</span> le ha gustado tu comentario.",
 
     "Required action" : "Acción necesaria",
     "To continue you need to log in" : "Para continuar necesitas iniciar sesión",

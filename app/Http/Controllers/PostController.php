@@ -111,6 +111,7 @@ class PostController extends Controller
         DB::table('notifications')->where('data->post', $id)->where('data->tipo', 'newPostFollowed')->where('data->user->id', Auth::user()->id)->delete();
         DB::table('notifications')->where('data->post', $id)->where('data->tipo', 'commentPost')->where('data->user->id', Auth::user()->id)->delete();
         DB::table('notifications')->where('data->post', $id)->where('data->tipo', 'likePost')->where('data->user->id', Auth::user()->id)->delete();
+        DB::table('notifications')->where('data->post', $id)->where('data->tipo', 'likeComment')->where('data->user->id', Auth::user()->id)->delete();
 
         if($request->ajax()){
             return response()->json('ok');

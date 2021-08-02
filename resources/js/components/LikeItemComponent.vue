@@ -1,5 +1,5 @@
 <template>
-<a :href="like.user.url" class="usuarioItem text-decoration-none d-block">
+<a :href="like.user.url" class="usuarioItem text-decoration-none d-block p-2">
     <div class="row g-0">
         <div class="col col-auto py-1 ps-2">
             <img v-bind:src="like.user.avatar" class="imagenUsuario" />
