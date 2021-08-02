@@ -71,7 +71,22 @@
     "has followed you" : "A <span class='fw-bold'>:name</span> ha comenzado a seguirte.",
 
     "Required action" : "Acción necesaria",
-    "To continue you need to log in" : "Para continuar necesitas iniciar sesión"
+    "To continue you need to log in" : "Para continuar necesitas iniciar sesión",
+
+    "Show guide" : "Mostrar guía",
+    "Welcome to Public Table" : "Bienvenido a Public Table",
+    "By clicking here you will go to the main page" : "Haciendo click aquí irás a la página principal",
+    "Change language" : "Cambio de idioma",
+    "You can choose your default language here" : "Puedes elegir tu idioma predeterminado aquí",
+    "You can indicate that a publication you like with this button" : "Puedes indicar que una publicación te gusta con este botón",
+    "You can comment on text or a gif" : "Puedes comentar texto o un gif",
+    "You can access your profile or log out" : "Puedes acceder a tu perfil o cerrar sesión",
+    "We will inform you if someone interacts with your publications" : "Te informaremos si alguien interactúa con tus publicaciones",
+    "That's it! You can see the guide again" : "¡Eso es todo! Puedes volver a ver la guía otra vez",
+
+    "Previous" : "Anterior",
+    "Next" : "Siguiente",
+    "Close" : "Cerrar"
 
 
 }

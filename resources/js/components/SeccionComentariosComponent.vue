@@ -36,7 +36,7 @@
                             @keydown="onKeyDown"
                         ></span>
                     </div>
-                    <div class="col col-auto" style="color: #777">
+                    <div class="col col-auto guide-4" style="color: #777">
                         <gif-picker-component @gif-seleccionado="recibirGif">
                         </gif-picker-component>
                         <svg

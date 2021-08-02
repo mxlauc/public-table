@@ -327,7 +327,7 @@
             role="button"
             style="user-select: none;font-size:14px;"
         >
-            <div class="col text-center py-2" v-wave @click="toggleLike" :class="{like: my_like}">
+            <div class="col text-center py-2 guide-3" v-wave @click="toggleLike" :class="{like: my_like}">
                 <svg xmlns="http://www.w3.org/2000/svg"
                 v-if="my_like"
                 width="25"
