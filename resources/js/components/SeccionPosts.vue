@@ -84,9 +84,12 @@ export default {
             this.posts.splice(indice, 1);
         },
         sizeChanged(){
-            this.masonry?.destroy();
-            delete this.masonry;
-            this.masonry = new Masonry(".masonry-row", {});
+            if(this.masonry){
+                this.masonry.reloadItems();
+                this.masonry.layout();
+            }else{
+                this.masonry = new Masonry(".masonry-row", {});
+            }
         },
     }
 }
