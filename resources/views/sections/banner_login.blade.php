@@ -11,7 +11,7 @@
                 {{ __('Login') }}
             </a>
         </div>
-        <div class="col col-12 col-lg-4">
+        <div class="col col-12 col-lg-4 d-none d-lg-block">
             <img src="/people.png" class="img-fluid">
             <br>
             <a href="http://www.freepik.com"
